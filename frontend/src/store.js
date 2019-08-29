@@ -6,6 +6,7 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state:{
+    timer: 0,
     columns:[{
       id:1,
       title: 'Things to do',
@@ -28,11 +29,11 @@ const store = new Vuex.Store({
         column.notes.push(note)
       }
     },
-    MARK_DONE({columns}, noteid){
+    TOGGLE_DONE({columns}, noteid){
       columns.forEach((col)=>{
         col.notes.forEach((note)=>{
           if (note.id === noteid){
-            note.done = true
+            note.done = !note.done
           }
         })
       })
@@ -49,20 +50,34 @@ const store = new Vuex.Store({
     },
     ADD_ALERT({alerts}, alert){
       alerts.push(alert)
+    },
+    REMOVE_ALERT({alerts}, alertobj){
+      var a = alerts.filter((alert)=>alert.id = alertobj.id)[0]
+      if(a){
+        alerts.splice(alerts.indexOf(a), 1)
+      }
     }
   },
   actions:{
     add_note({commit}, {columnid, note}){
       commit('ADD_NOTE', {columnid, note})
     },
-    mark_done({commit}, noteid){
-      commit('MARK_DONE', noteid)
+    toggle_done({commit}, noteid){
+      commit('TOGGLE_DONE', noteid)
     },
     delete_note({commit}, noteid){
       commit('DELETE_NOTE', noteid)
     },
-    add_alert({commit}, alertobj){
+    add_alert({commit}, {message, error}){
+      if(!error){error = false}
+      var alertobj = {id: `${new Date().getTime().toString()}`, message, type: error ? 'alert alert-danger' : 'alert alert-success' }
       commit('ADD_ALERT', alertobj)
+      setTimeout(()=>{
+        commit('REMOVE_ALERT', alertobj)
+      }, 4000)
+    },
+    remove_alert({commit}, alertobj){
+      commit('REMOVE_ALERT', alertobj)
     },
     update_state({commit}, state){
       commit('UPDATE_STATE', state)

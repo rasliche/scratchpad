@@ -1,13 +1,21 @@
 <template>
   <div id="app">
+    <Navbar />
+    <Alert v-for="alert in alerts" :key="alert.id"  :alert="alert"/>
     <router-view/>
   </div>
 </template>
 
 <script>
-
+import Alert from './components/Alert'
+import Navbar from './components/Navbar'
+import {mapState} from 'vuex'
 export default {
   name: 'app',
+  components:{
+    Alert,
+    Navbar
+  },
   created(){
     var state = JSON.parse(localStorage.getItem('state'))
     if (state){
@@ -16,7 +24,10 @@ export default {
     setInterval(()=>{
       localStorage.setItem('state',JSON.stringify(this.$store.state))
     }, 10000)
-  }
+  },
+  computed: mapState({
+    alerts: (state) => state.alerts
+  })
 }
 </script>
 
@@ -27,7 +38,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 html{
   overflow-x:hidden;

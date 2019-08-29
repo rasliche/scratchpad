@@ -6,6 +6,16 @@ import store from './store'
 import VueCookies from 'vue-cookies'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+
+Vue.component('font-awesome-icon', FontAwesomeIcon)
+
+
+import { faPlay, faPause, faStop } from '@fortawesome/free-solid-svg-icons'
+library.add(faPlay, faPause, faStop)
+
+
 
 Vue.config.productionTip = false
 Vue.use(VueCookies)
