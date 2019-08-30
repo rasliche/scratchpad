@@ -3,7 +3,7 @@ This is a very simple project - not sure where I am going with it, but we'll see
 
 You can try it out here:
 
-[Scratchy Online](https://elasticbeanstalk-eu-west-2-688580042881.s3.eu-west-2.amazonaws.com/)
+[Scratchy Online](https://elasticbeanstalk-eu-west-2-688580042881.s3.eu-west-2.amazonaws.com/index.html)
 
 
 # What to get involved?
