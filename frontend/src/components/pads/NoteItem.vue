@@ -1,10 +1,11 @@
 <template>
   <div>
-    <li class="list-group-item mb-1">
+    <li class="list-group-item mb-2">
       <small class="spt font-italic">{{ note.created | toHumanDate }}</small>
       <small :class="note.done ? 'pts badge badge-success' : 'pts badge badge-warning'"
       >{{ note.done ? 'Done' : 'Todo' }}</small>
-      <p class="m-1 mr-5 text-left">{{note.text}}</p>
+      <small class="pts2">#{{ note.id }}</small>
+      <p class="text-left mr-5">{{note.text}}</p>
       <div class="text-left">
         <span>
           <a href="javascript:void(0)" class="text-success" @click="toggle_done(note.id)">{{ note.done ? 'Undo' : 'Done' }}</a>
@@ -19,7 +20,7 @@
 <script>
 import moment from 'moment'
 export default {
-  name: 'Note',
+  name: 'NoteItem',
   props: {
     note: {
       type: Object,
@@ -42,14 +43,18 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 .spt{
   position: absolute!important;
   right: 10px!important;
   bottom: 15px!important;
 }
-.pts{
+.pts2{
   position: absolute!important;
   right: 10px!important;
+}
+.pts{
+  position: absolute!important;
+  right: 70px!important;
 }
 </style>

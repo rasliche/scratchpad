@@ -12,7 +12,6 @@
       <a href="javascript:void(0)" @click="save_timer_entry" class="mr-2 text-success">Save</a>
       <a href="javascript:void(0)" @click="clear_timer_entry" class="mr-2 text-danger">Clear</a>
     </span>
-    <a href="javascript:void(0)">My timers ({{ this.$store.state.timers.length }})</a>
   </div>
 </template>
 
@@ -24,13 +23,17 @@ export default {
     return{
       timeron: false,
       timer: 0,
-      a: null,
+      intervalFunctionId: null,
       timerentry:''
     }
   },
   filters:{
     toHumanDate(d){
-      return moment(d).format('hh:mm:ss')
+      var duration = moment.duration(d)
+      var _h = duration.hours()
+      var _m = duration.minutes()
+      var _s = duration.seconds()
+      return `${_h < 10 ? "0" + _h : _h}:${_m < 10 ? "0" + _m : _m}:${_s < 10 ? "0" + _s : _s}`
     }
   },
   methods:{
@@ -41,19 +44,25 @@ export default {
         this.timer = moment() - s
         document.title = this.$options.filters.toHumanDate(this.timer)
       },1000)
-      this.a = b.toString()
+      this.intervalFunctionId = b.toString()
     },
     stop_timer(){
       this.timeron = false
-      clearInterval(this.a)
+      clearInterval(this.intervalFunctionId)
       document.title = 'Scratchy'
     },
     save_timer_entry(){
-      this.$store.dispatch('add_timer', {note: this.timerentry, timer: this.$options.filters.toHumanDate(this.timer) })
+      this.$store.dispatch('add_timer', {
+        id: Math.floor(Math.random() * 100000),
+        note: this.timerentry, 
+        timer: this.$options.filters.toHumanDate(this.timer),
+        created: moment()})
       this.clear_timer_entry()
     },
     clear_timer_entry(){
       this.timer = 0
+      this.timerentry = ''
+      this.intervalFunctionId = null
     }
   }
 }

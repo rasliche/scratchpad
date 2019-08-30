@@ -60,6 +60,12 @@ const store = new Vuex.Store({
     },
     ADD_TIMER({timers}, timerobj){
       timers.push(timerobj)
+    },
+    DELETE_TIMER({timers}, timerid){
+      var timer_to_delete = timers.filter((t) => t.id === timerid)[0]
+      if(timer_to_delete){
+        timers.splice(timers.indexOf(timer_to_delete), 1)
+      }
     }
   },
   actions:{
@@ -86,11 +92,15 @@ const store = new Vuex.Store({
     update_state({commit}, state){
       commit('UPDATE_STATE', state)
     },
-    add_timer({commit}, {note, timer}){
-      commit('ADD_TIMER', {note, timer})
+    add_timer({commit}, {id, note, timer, created}){
+      commit('ADD_TIMER', {id, note, timer, created})
+    },
+    delete_timer({commit}, timerid){
+      commit('DELETE_TIMER', timerid)
     }
   },
   getters:{
+    
   }
 })
 
