@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" class="mt-5 pt-5">
     <Navbar />
     <Alert v-for="alert in alerts" :key="alert.id"  :alert="alert"/>
     <router-view/>

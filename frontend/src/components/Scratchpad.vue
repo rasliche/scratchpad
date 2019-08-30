@@ -15,7 +15,7 @@
     <textarea type="text" placeholder='(Shift+Enter to save)' class="form-control mt-2 mb-2 bg-transparent" 
     @keyup.shift.enter="add_note($event, column)"
     rows="6"></textarea>
-    <a href="javascript:void(0)">Alerts</a> &nbsp; <a href="javascript:void(0)" @click="showallnotes">{{ showall ? 'Hide done' : 'Show all (' + column.notes.length + ')' }} </a>
+    <a href="javascript:void(0)">Add</a> &nbsp; <a href="javascript:void(0)" @click="showallnotes">{{ showall ? 'Hide done' : 'Show all (' + column.notes.length + ')' }} </a>
   </div>
 </template>
 
