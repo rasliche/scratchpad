@@ -6,7 +6,7 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state:{
-    timer: 0,
+    timers: [],
     columns:[{
       id:1,
       title: 'Things to do',
@@ -22,6 +22,7 @@ const store = new Vuex.Store({
   mutations:{
     UPDATE_STATE(state, newstate){
       state.columns = newstate.columns
+      state.timers = newstate.timers
     },
     ADD_NOTE({columns}, {columnid, note}){
       var column = columns.filter((col) => col.id === columnid)[0]
@@ -56,6 +57,9 @@ const store = new Vuex.Store({
       if(a){
         alerts.splice(alerts.indexOf(a), 1)
       }
+    },
+    ADD_TIMER({timers}, timerobj){
+      timers.push(timerobj)
     }
   },
   actions:{
@@ -81,6 +85,9 @@ const store = new Vuex.Store({
     },
     update_state({commit}, state){
       commit('UPDATE_STATE', state)
+    },
+    add_timer({commit}, {note, timer}){
+      commit('ADD_TIMER', {note, timer})
     }
   },
   getters:{

@@ -17,6 +17,7 @@ export default {
     Navbar
   },
   created(){
+    document.title = 'Scratchy'
     var state = JSON.parse(localStorage.getItem('state'))
     if (state){
       this.$store.dispatch('update_state', state)

@@ -4,11 +4,11 @@
     <ul class="list-group mb-4" id="scratch">
       <p class="text-center text-info" v-if="notes_not_done.length == 0">¯\_(ツ)_/¯ Nothing here</p>
       <div v-if="!showall">
-        <!-- Note component -->
+        <!-- Note component for todos not done -->
         <Note v-for="note in notes_not_done" :key="note.id" :note="note" />
       </div>
       <div v-else>
-        <!-- Note component -->
+        <!-- Note component for todos done-->
         <Note v-for="note in column.notes" :key="note.id" :note="note" />
       </div>
     </ul>

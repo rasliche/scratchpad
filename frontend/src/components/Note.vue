@@ -4,7 +4,7 @@
       <small class="spt font-italic">{{ note.created | toHumanDate }}</small>
       <small :class="note.done ? 'pts badge badge-success' : 'pts badge badge-warning'"
       >{{ note.done ? 'Done' : 'Todo' }}</small>
-      <p class="m-1 text-left">{{note.text}}</p>
+      <p class="m-1 mr-5 text-left">{{note.text}}</p>
       <div class="text-left">
         <span>
           <a href="javascript:void(0)" class="text-success" @click="toggle_done(note.id)">{{ note.done ? 'Undo' : 'Done' }}</a>
