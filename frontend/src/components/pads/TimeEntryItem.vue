@@ -9,7 +9,7 @@
       </p>
       <div class="text-left">
         <span>
-        <a href="javascript:void(0)" class="text-secondary" @click="delete_timer">Delete</a>
+        <a href="javascript:void(0)" class="text-danger" @click="delete_timer">Delete</a>
         </span>
       </div>
     </li>
@@ -33,7 +33,9 @@ export default {
   },
   methods:{
     delete_timer(){
-      this.$store.dispatch('delete_timer', this.timer.id)
+      if(confirm('Delete time entry?')){
+        this.$store.dispatch('delete_timer', this.timer.id)
+      }
     }
   }
 }

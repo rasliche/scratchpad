@@ -1,6 +1,6 @@
 <template>
-  <div :class="alert.type">
-    <p>{{ alert.message }}</p>
+  <div :class="alert.error ? 'text-left alert alert-danger':'text-left alert alert-success'">
+    {{ alert.message }}
   </div>
 </template>
 

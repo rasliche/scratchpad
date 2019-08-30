@@ -10,12 +10,7 @@ const store = new Vuex.Store({
     columns:[{
       id:1,
       title: 'Things to do',
-      notes: [{
-        id:'1',
-        text:'Drink water !',
-        done: false,
-        created: new Date().toUTCString()
-      }]
+      notes: []
     }],
     alerts:[]
   },
@@ -66,6 +61,31 @@ const store = new Vuex.Store({
       if(timer_to_delete){
         timers.splice(timers.indexOf(timer_to_delete), 1)
       }
+    },
+    ADD_NOTE_ALERT({columns}, {noteid, alertobj}){
+      columns.forEach((col)=>{
+        var note = col.notes.filter((note) => note.id === noteid)[0]
+        if(note){
+          if(note.alerts){
+            note.alerts.push(alertobj)
+          }else{
+            note['alerts'] = []
+            note.alerts.push(alertobj)
+          }
+          return
+        }
+      })
+    },
+    DELETE_NOTE_ALERTS({columns}, noteid){
+      columns.forEach((col)=>{
+        var note = col.notes.filter((note) => note.id === noteid)[0]
+        if(note){
+          if(note.alerts){
+            note.alerts = []
+          }
+          return
+        }
+      })
     }
   },
   actions:{
@@ -80,7 +100,7 @@ const store = new Vuex.Store({
     },
     add_alert({commit}, {message, error}){
       if(!error){error = false}
-      var alertobj = {id: `${new Date().getTime().toString()}`, message, type: error ? 'alert alert-danger' : 'alert alert-success' }
+      var alertobj = {id: `${new Date().getTime().toString()}`, message, error }
       commit('ADD_ALERT', alertobj)
       setTimeout(()=>{
         commit('REMOVE_ALERT', alertobj)
@@ -97,10 +117,26 @@ const store = new Vuex.Store({
     },
     delete_timer({commit}, timerid){
       commit('DELETE_TIMER', timerid)
+    },
+    add_note_alert({commit}, {noteid, time}){
+      var alertobj = {
+        time,
+        completed: false
+      }
+      commit('ADD_NOTE_ALERT', {noteid, alertobj})
+    },
+    delete_note_alerts({commit}, noteid){
+      commit('DELETE_NOTE_ALERTS', noteid)
     }
   },
   getters:{
-    
+    all_todos_not_done_count({columns}){
+      var total = 0
+      columns.forEach((col)=>{
+        total += col.notes.filter((todo)=>todo.done === false).length
+      })
+      return total
+    }
   }
 })
 

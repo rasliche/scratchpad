@@ -4,10 +4,10 @@
       <div class="col">
         <ul class="nav nav-tabs mb-4">
           <li class="nav-item">
-            <a href="javascript:void(0)" @click="tabs" :class="tab == 't1' ? 'nav-link active' : 'nav-link'" id="t1">Things to do</a>
+            <a href="javascript:void(0)" @click="tabs" :class="tab == 't1' ? 'nav-link active' : 'nav-link'" id="t1">Things to do ({{ all_todos_not_done_count }})</a>
           </li>
           <li class="nav-item">
-            <a :class="tab == 't2' ? 'nav-link active' : 'nav-link'" @click="tabs" href="javascript:void(0)" id="t2">My timers ({{ this.$store.state.timers.length }})</a>
+            <a :class="tab == 't2' ? 'nav-link active' : 'nav-link'" @click="tabs" href="javascript:void(0)" id="t2">My timers ({{ timers.length }})</a>
           </li>
         </ul>
         <div v-if="tab=='t1'">
@@ -31,7 +31,7 @@ export default  {
   name:'Home',
   data(){
     return {
-      tab: ''
+      tab: 't1'
     }
   },
   components:{
@@ -44,9 +44,12 @@ export default  {
 
     }
   },
-  computed: mapState({
-    columns: state => state.columns,
-    timers: state => state.timers
-  })
+  computed:{
+    all_todos_not_done_count(){return this.$store.getters.all_todos_not_done_count},
+    ...mapState({
+      columns: state => state.columns,
+      timers: state => state.timers
+    })
+  }
 }
 </script>
