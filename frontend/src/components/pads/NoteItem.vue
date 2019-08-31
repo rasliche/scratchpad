@@ -1,17 +1,17 @@
 <template>
   <div>
     <li class="list-group-item mb-2">
-      <small class="spt font-italic">{{ note.created | toHumanDate }}</small>
-      <small :class="note.done ? 'pts badge badge-success' : 'pts badge badge-warning'"
-      >{{ note.done ? 'Done' : '' }}</small>
+      <small class="spt font-italic">{{ dnote.created | toHumanDate }}</small>
+      <small :class="dnote.done ? 'pts badge badge-success' : 'pts badge badge-warning'"
+      >{{ dnote.done ? 'Done' : '' }}</small>
       <span v-if="note_has_active_alerts">
-        <small v-for="notealert in note.alerts" :key="notealert.time" class="badge badge-warning mr-2">{{ notealert.time}}</small>
+        <small v-for="notealert in dnote.alerts" :key="notealert.time" class="badge badge-warning mr-2">{{ notealert.time}}</small>
       </span>
-      <small class="pts2">#{{ note.id }}</small>
-      <p class="text-left mt-2 mr-5 pr-5">{{note.text}}</p>
+      <small class="pts2">#{{ dnote.id }}</small>
+      <p class="text-left mt-2 mr-5 pr-5">{{ dnote.text }}</p>
       <div class="text-left">
         <span class="mr-2">
-          <a href="javascript:void(0)" class="text-success" @click="toggle_done">{{ note.done ? 'Undo' : 'Done' }}</a>
+          <a href="javascript:void(0)" class="text-success" @click="toggle_done">{{ dnote.done ? 'Undo' : 'Done' }}</a>
         </span>
         <span v-if="show_settings" class="mr-2">
           <a v-if="!note_has_active_alerts" href="javascript:void(0)" class="text-info" @click="set_alert">Set Alert</a>
@@ -36,7 +36,8 @@ export default {
   data(){
     return{
       show_settings: false,
-      setting_alert: false
+      setting_alert: false,
+      dnote: this.note
     }
   },
   props: {
@@ -59,28 +60,27 @@ export default {
       this.setting_alert = false
     },
     toggle_done(){
-      this.$store.dispatch('toggle_done', this.note.id)
+      this.$store.dispatch('toggle_done', this.dnote.id)
     },
     delete_note(){
       if(confirm('Delete note?')){
-        this.$store.dispatch('delete_note', this.note.id)
+        this.$store.dispatch('delete_note', this.dnote.id)
       }
     },
     add_note_alert(e){
-      this.$store.dispatch('add_note_alert', {noteid: this.note.id, time:e.target.value})
-      this.$store.dispatch('add_alert', {message: `Alert set for todo #${this.note.id} at ${e.target.value}`, error:false})
+      this.$store.dispatch('add_note_alert', {noteid: this.dnote.id, time:e.target.value})
       e.target.value = ''
       this.toggle_settings()
     },
     delete_note_alerts(){
-      this.$store.dispatch('delete_note_alerts', this.note.id)
+      this.$store.dispatch('delete_note_alerts', this.dnote.id)
       this.toggle_settings()
     }
   },
   computed:{
     note_has_active_alerts(){
-      if(this.note.alerts != undefined){
-        if(this.note.alerts.filter((n)=> n.completed === false).length > 0){
+      if(this.dnote.alerts != undefined){
+        if(this.dnote.alerts.filter((n)=> n.completed === false).length > 0){
           return true
         }
       }
