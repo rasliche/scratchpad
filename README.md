@@ -2,12 +2,15 @@
 This is a very simple project I started to help me with work related time keeping. 
 There is no backend required for the application as it uses the localStorage to keep track of data.
 
-<img src="https://github.com/j-000/scratchpad/blob/master/frontend/src/assets/images/github/headerimage.png">
+<p align="center">
+    <img height="400" src="https://github.com/j-000/scratchpad/blob/master/frontend/src/assets/images/github/headerimage.png">
+</p>
+
 
 This applications targets work productivity. If you're like me and need to keep track of how long you take
 working on certain tasks, then this tool may help you. 
 
-Current features:
+## Current features:
 - :notebook_with_decorative_cover: Note entry and management.
 - :timer_clock: Time entry with short note.
 - :file_folder: Everything is local! Your data stays on your browser (localStorage).
