@@ -1,4 +1,6 @@
 # Scratchy
+[Try it online](https://elasticbeanstalk-eu-west-2-688580042881.s3.eu-west-2.amazonaws.com/index.html)
+
 This is a very simple project I started to help me with work related time keeping. 
 There is no backend required for the application as it uses the localStorage to keep track of data.
 
@@ -21,8 +23,8 @@ working on certain tasks, then this tool may help you.
 - [Vuex](https://vuex.vuejs.org/) - for easy state management.
 - [Bootstrap](https://getbootstrap.com/) for people that are terrible with CSS (like me).
 
-You can try it out here:
 
+## You can try it out here:
 [Scratchy Online](https://elasticbeanstalk-eu-west-2-688580042881.s3.eu-west-2.amazonaws.com/index.html)
 
 
