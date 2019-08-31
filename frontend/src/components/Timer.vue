@@ -1,6 +1,6 @@
 <template>
   <p class="p-2 mb-0">
-    <a @click="start_timer" class="mr-2" v-if="!timeron" href="javascript:void(0)">
+    <a @click="start_timer" class="mr-2" v-if="!timeron" href="javascript:void(0)" title="Start a new timer">
       <font-awesome-icon icon="play"/>
     </a>
     <a v-else @click="stop_timer" class="mr-2" href="javascript:void(0)">

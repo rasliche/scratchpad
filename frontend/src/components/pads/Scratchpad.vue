@@ -7,7 +7,7 @@
       </span>
     </p>
     <div class="list-group scratch pt-2 pb-2">
-      <p class="text-center text-info" v-if="notes_not_done.length == 0 & !showall">¯\_(ツ)_/¯ Nothing here</p>
+      <p class="text-center text-info mt-5 mb-5" v-if="notes_not_done.length == 0 & !showall">¯\_(ツ)_/¯ Nothing here</p>
       <div v-if="!showall">
         <NoteItem v-for="note in notes_not_done" :key="note.id" :note="note" :columnid="column.id"/>
       </div>
@@ -80,7 +80,7 @@ export default {
 
 <style>
 .scratch{
-  max-height: 400px;
+  max-height: 500px;
   overflow-y: scroll;
   border-top: 1px solid rgba(0, 0, 0, 0.125);
   border-bottom: 1px solid rgba(0, 0, 0, 0.125);
