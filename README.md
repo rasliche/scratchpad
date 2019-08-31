@@ -4,8 +4,14 @@ There is no backend required for the application as it uses the localStorage to 
 
 <img src="https://github.com/j-000/scratchpad/blob/master/frontend/src/assets/images/github/headerimage.png">
 
-This applications tries to help with productivity. If you need, like me, to keep track of how long you take
-working on certain tasks, then this tool may help you. There also a scratchpad for quick note entry.
+This applications targets work productivity. If you're like me and need to keep track of how long you take
+working on certain tasks, then this tool may help you. 
+
+Current features:
+- :notebook_with_decorative_cover: Note entry and management.
+- :timer_clock: Time entry with short note.
+- :file_folder: Everything is local! Your data stays on your browser (localStorage).
+
 
 ## Tech used:
 - [Vuesjs](https://vuejs.org/) - single page applications made easy.
