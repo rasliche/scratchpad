@@ -41,11 +41,11 @@ Now do some coding and create a pull request
 Feel free to make some suggestions, add new features and whatnot.
 
 ### Ideas for improvement:
-[-] - Add a logo
-[-] - Add alert functionaity to the todos
-[-] - Leverage 3rd party APIs for alerts (like twilio, SMTP or browser notifications API)
-[-] - Add settings for customisation of alerts
-[-] - Improved UI - maybe allow customisation
+[ - ] - Add a logo
+[ - ] - Add alert functionaity to the todos
+[ - ] - Leverage 3rd party APIs for alerts (like twilio, SMTP or browser notifications API)
+[ - ] - Add settings for customisation of alerts
+[ - ] - Improved UI - maybe allow customisation
 
 ### License
 [MIT](https://en.wikipedia.org/wiki/MIT_License)
