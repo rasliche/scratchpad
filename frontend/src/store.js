@@ -11,7 +11,8 @@ const store = new Vuex.Store({
       title: 'Things to do',
       notes: []
     }],
-    alerts:[]
+    alerts:[],
+    usedStorage: 0
   },
   mutations:{
     UPDATE_STATE(state, newstate){
@@ -24,30 +25,39 @@ const store = new Vuex.Store({
         column.notes.push(note)
       }
     },
-    TOGGLE_DONE({columns}, noteid){
-      columns.forEach((col)=>{
-        col.notes.forEach((note)=>{
-          if (note.id === noteid){
-            note.done = !note.done
-          }
-        })
-      })
+    UPDATE_NOTE({columns}, {columnid, noteid, text}){
+      var col = columns.filter((c) => c.id === columnid)[0]
+      if(col){
+        var note = col.notes.filter((n) => n.id === noteid)[0]
+        if(note){
+          note.text = text
+        }
+      }
     },
-    DELETE_NOTE({columns}, noteid){
-      columns.forEach((col)=>{
-        col.notes.forEach((note)=>{
-          if (note.id === noteid){
-            var index = col.notes.indexOf(note)
-            col.notes.splice(index, 1)
-          }
-        })
-      })
+    TOGGLE_DONE({columns}, {columnid, noteid}){
+      var col = columns.filter((c) => c.id === columnid)[0]
+      if(col){
+        var note = col.notes.filter((n) => n.id === noteid)[0]
+        if(note){
+          note.done = !note.done
+        }
+      }
+    },
+    DELETE_NOTE({columns}, {columnid, noteid}){
+      var col = columns.filter((c) => c.id === columnid)[0]
+      if(col){
+        var note = col.notes.filter((n) => n.id === noteid)[0]
+        if(note){
+          var index = col.notes.indexOf(note)
+          col.notes.splice(index, 1)
+        }
+      }
     },
     ADD_ALERT({alerts}, alert){
       alerts.push(alert)
     },
     REMOVE_ALERT({alerts}, alertobj){
-      var a = alerts.filter((alert)=>alert.id = alertobj.id)[0]
+      var a = alerts.filter((alert) => alert.id === alertobj.id)[0]
       if(a){
         alerts.splice(alerts.indexOf(a), 1)
       }
@@ -61,9 +71,10 @@ const store = new Vuex.Store({
         timers.splice(timers.indexOf(timer_to_delete), 1)
       }
     },
-    ADD_NOTE_ALERT({columns}, {noteid, alertobj}){
-      columns.forEach((col)=>{
-        var note = col.notes.filter((note) => note.id === noteid)[0]
+    ADD_NOTE_ALERT({columns}, {columnid, noteid, alertobj}){
+      var col = columns.filter((c)=> c.id === columnid)[0]
+      if(col){
+        var note = col.notes.filter((n) => n.id === noteid)[0]
         if(note){
           if(note.alerts){
             note.alerts.push(alertobj)
@@ -71,31 +82,36 @@ const store = new Vuex.Store({
             note['alerts'] = []
             note.alerts.push(alertobj)
           }
-          return
         }
-      })
+      }
     },
-    DELETE_NOTE_ALERTS({columns}, noteid){
-      columns.forEach((col)=>{
+    DELETE_NOTE_ALERTS({columns}, {columnid, noteid}){
+      var col = columns.filter((c) => c.id === columnid)[0]
+      if (col){
         var note = col.notes.filter((note) => note.id === noteid)[0]
         if(note){
           if(note.alerts){
             note.alerts = []
           }
-          return
         }
-      })
+      }
+    },
+    UPDATE_STORAGE_USED(store, newValue){
+      store.usedStorage = newValue
     }
   },
   actions:{
     add_note({commit}, {columnid, note}){
       commit('ADD_NOTE', {columnid, note})
     },
-    toggle_done({commit}, noteid){
-      commit('TOGGLE_DONE', noteid)
+    update_note({commit}, {columnid, noteid, text}){
+      commit('UPDATE_NOTE', {columnid, noteid, text})
     },
-    delete_note({commit}, noteid){
-      commit('DELETE_NOTE', noteid)
+    toggle_done({commit}, {columnid, noteid}){
+      commit('TOGGLE_DONE', {columnid, noteid})
+    },
+    delete_note({commit}, {columnid, noteid}){
+      commit('DELETE_NOTE', {columnid, noteid})
     },
     add_alert({commit}, {message, error}){
       if(!error){error = false}
@@ -117,15 +133,26 @@ const store = new Vuex.Store({
     delete_timer({commit}, timerid){
       commit('DELETE_TIMER', timerid)
     },
-    add_note_alert({commit}, {noteid, time}){
+    add_note_alert({commit}, {columnid, noteid, time}){
       var alertobj = {
         time,
         completed: false
       }
-      commit('ADD_NOTE_ALERT', {noteid, alertobj})
+      commit('ADD_NOTE_ALERT', {columnid, noteid, alertobj})
     },
-    delete_note_alerts({commit}, noteid){
-      commit('DELETE_NOTE_ALERTS', noteid)
+    delete_note_alerts({commit}, {columnid, noteid}){
+      commit('DELETE_NOTE_ALERTS', {columnid, noteid})
+    },
+    calculate_used_storage({commit}){
+      var _lsTotal = 0, _xLen, _x
+      for(_x in localStorage){
+        if(!localStorage.hasOwnProperty(_x)){
+          continue
+        }
+        _xLen = ((localStorage[_x].length + _x.length)* 2)
+        _lsTotal += _xLen
+      }
+      commit('UPDATE_STORAGE_USED', (_lsTotal/1024).toFixed(2))
     }
   },
   getters:{

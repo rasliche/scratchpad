@@ -1,9 +1,9 @@
 <template>
-  <div class="p-2 ">
+  <p class="p-2 mb-0">
     <a @click="start_timer" class="mr-2" v-if="!timeron" href="javascript:void(0)">
       <font-awesome-icon icon="play"/>
     </a>
-    <a v-if="timeron" @click="stop_timer" class="mr-2" href="javascript:void(0)">
+    <a v-else @click="stop_timer" class="mr-2" href="javascript:void(0)">
       <font-awesome-icon icon="stop"/>
     </a>
     <span class="mr-2">{{ timer | toHumanDate }}</span>
@@ -12,7 +12,7 @@
       <a href="javascript:void(0)" @click="save_timer_entry" class="mr-2 text-success">Save</a>
       <a href="javascript:void(0)" @click="clear_timer_entry" class="mr-2 text-danger">Clear</a>
     </span>
-  </div>
+  </p>
 </template>
 
 <script>
@@ -69,5 +69,7 @@ export default {
 </script>
 
 <style>
-
+.navbar-nav{
+  flex-direction: unset!important;
+}
 </style>

@@ -1,20 +1,24 @@
 <template>
   <div class="text-left">
-    <ul class="list-group scratch">
+    <p class="text-left">
+      <span class="mr-2">
+        <font-awesome-icon icon="filter" class="mr-2"/>
+          <a href="javascript:void(0)" @click="showallnotes">{{ showall ? 'Hide done' : 'Show all (' + column.notes.length + ')' }} </a>
+      </span>
+    </p>
+    <div class="list-group scratch pt-2 pb-2">
       <p class="text-center text-info" v-if="notes_not_done.length == 0 & !showall">¯\_(ツ)_/¯ Nothing here</p>
       <div v-if="!showall">
-        <NoteItem v-for="note in notes_not_done" :key="note.id" :note="note" />
+        <NoteItem v-for="note in notes_not_done" :key="note.id" :note="note" :columnid="column.id"/>
       </div>
       <div v-else>
-        <NoteItem v-for="note in column.notes" :key="note.id" :note="note" />
+        <NoteItem v-for="note in column.notes" :key="note.id" :note="note" :columnid="column.id" />
       </div>
-    </ul>
+    </div>
     <textarea id="todo_text" type="text" placeholder='(Shift+Enter to save)' class="mt-4 mb-3 form-control bg-transparent" 
-    @keyup.shift.enter="add_note($event, column)"
-    rows="6"></textarea>
+    @keyup.shift.enter="add_note($event, column)" rows="6"></textarea>
     <p>
-      <a href="javascript:void(0)" @click="add_note(false, column)">Add</a> &nbsp; 
-      <a href="javascript:void(0)" @click="showallnotes">{{ showall ? 'Hide done' : 'Show all (' + column.notes.length + ')' }} </a>
+      <a class="text-white p-2 bg-success" href="javascript:void(0)" @click="add_note(false, column)">Add</a> &nbsp; 
     </p>
   </div>
 </template>
@@ -31,6 +35,7 @@ export default {
   },
   data(){
     return{
+      filtering: false,
       showall:false
     }
   },
@@ -77,5 +82,12 @@ export default {
 .scratch{
   max-height: 400px;
   overflow-y: scroll;
+  border-top: 1px solid rgba(0, 0, 0, 0.125);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+textarea.form-control:focus{
+  outline-width: 0 !important;
+  box-shadow: none;
+  outline: none!important;
 }
 </style>

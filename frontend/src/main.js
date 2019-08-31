@@ -11,13 +11,14 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
-
+import { faTrash, faBoxOpen, faCheck, faClock, faPen, faFilter, faCog } from '@fortawesome/free-solid-svg-icons'
 import { faPlay, faPause, faStop } from '@fortawesome/free-solid-svg-icons'
-library.add(faPlay, faPause, faStop)
+library.add(faPlay, faPause, faStop, faTrash, faBoxOpen, faCheck, faClock, faPen, faFilter, faCog)
 
 
 
 Vue.config.productionTip = false
+Vue.config.devtools = true
 Vue.use(VueCookies)
 Vue.use(BootstrapVue)
 Vue.use(require('vue-moment'));
