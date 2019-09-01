@@ -5,7 +5,7 @@ This is a very simple project I started to help me with work related time keepin
 There is no backend required for the application as it uses the localStorage to keep track of data.
 
 <p align="center">
-    <img height="400" src="https://github.com/j-000/scratchpad/blob/master/frontend/src/assets/images/github/headerimage.png">
+    <img height="400" src="https://github.com/j-000/scratchpad/blob/master/frontend/src/assets/images/github/headerimage1.png">
 </p>
 
 
