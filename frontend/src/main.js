@@ -11,9 +11,9 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
-import { faTrash, faBoxOpen, faCheck, faClock, faPen, faFilter, faCog } from '@fortawesome/free-solid-svg-icons'
+import { faTrash, faBoxOpen, faCheck, faClock, faPen, faFilter, faCog, faPlus } from '@fortawesome/free-solid-svg-icons'
 import { faPlay, faPause, faStop } from '@fortawesome/free-solid-svg-icons'
-library.add(faPlay, faPause, faStop, faTrash, faBoxOpen, faCheck, faClock, faPen, faFilter, faCog)
+library.add(faPlay, faPause, faStop, faTrash, faBoxOpen, faCheck, faClock, faPen, faFilter, faCog, faPlus)
 
 
 

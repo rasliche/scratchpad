@@ -3,19 +3,12 @@
     <div class="row ml-1 mr-1">
       <div class="col">
         <ul class="nav nav-tabs mb-4">
-          <li class="nav-item">
-            <a href="javascript:void(0)" @click="tabs" :class="tab == 't1' ? 'nav-link active' : 'nav-link'" id="t1">Things to do ({{ all_todos_not_done_count }})</a>
+          <li class="nav-item mr-2">
+            <a @click="add_new_column" href="javascript:void(0)" class="new_tab nav-link bg-info text-white"><font-awesome-icon icon="plus" /> New</a>
           </li>
-          <li class="nav-item">
-            <a :class="tab == 't2' ? 'nav-link active' : 'nav-link'" @click="tabs" href="javascript:void(0)" id="t2">My timers ({{ timers.length }})</a>
-          </li>
+          <Tab v-for="column in columns" :key="column.id" :column="column" />
         </ul>
-        <div v-if="tab=='t1'">
-          <Scratchpad v-for="column in columns" :key="column.id" :column="column"/>
-        </div>
-        <div v-else >
-          <Timerspad />
-        </div>
+        <Scratchpad v-if="active_column" :column="active_column" />
       </div>
     </div>
   </div>
@@ -23,33 +16,35 @@
 
 <script>
 import Scratchpad from '../components/pads/Scratchpad'
-import Timerspad from '../components/pads/Timerspad'
+import Tab from '../components/Tab'
 
 import { mapState } from 'vuex';
 
 export default  {
   name:'Home',
-  data(){
-    return {
-      tab: 't1'
-    }
-  },
   components:{
     Scratchpad,
-    Timerspad
-  },
-  methods:{
-    tabs(e){
-      this.tab = e.target.id
-
-    }
+    Tab
   },
   computed:{
-    all_todos_not_done_count(){return this.$store.getters.all_todos_not_done_count},
+    active_column(){
+      return this.columns.filter((c) => c.id === this.activeTab)[0]
+    },
     ...mapState({
       columns: state => state.columns,
-      timers: state => state.timers
+      timers: state => state.timers,
+      activeTab: state => state.activeTab
     })
+  },
+  methods:{
+    add_new_column(){
+      this.$store.dispatch('add_new_column', {title: 'Change me'})
+    }
   }
 }
 </script>
+<style scoped>
+.new_tab{
+  border-radius: 0!important;
+}
+</style>

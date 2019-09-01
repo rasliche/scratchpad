@@ -6,7 +6,7 @@
 
     <p v-if="!edit" class="text-left mt-3 mb-3 mr-5 pr-5">{{ dnote.text }}</p>
     <p v-else>
-      <input @keyup.enter="save_edit" v-model="new_text" type="text" class="form-control border-warning border-bottom mt-3 mb-3 mr-5">
+      <input @keyup.enter="save_edit" v-model="new_text" type="text" class="form-control border-warning mt-3 mb-3 mr-5">
     </p>
     
     <div class="text-left">
@@ -14,10 +14,6 @@
         <a href="javascript:void(0)" class="text-success" @click="toggle_done"><font-awesome-icon icon="check"/> {{ dnote.done ? 'Undo' : 'Done' }}</a>
       </span>
       <div v-if="show_settings" class="d-inline">
-        <!-- <span class="mr-3">
-          <a href="javascript:void(0)" class="text-info" @click="toggle_set_alert"><font-awesome-icon icon="clock"/> Set alert</a>
-          <input @keyup.enter="add_note_alert" v-if="setting_alert" class="ml-2" type="text" placeholder="hh:mm (Enter to save)">
-        </span> -->
         <span class="mr-3">
           <a v-if="!edit" href="javascript:void(0)" class="text-info" @click="toggle_edit"><font-awesome-icon icon="pen"/> Edit</a>
           <a v-else href="javascript:void(0)" class="text-info" @click="save_edit"><font-awesome-icon icon="pen"/> Save</a>
@@ -42,7 +38,6 @@ export default {
       new_text: this.note.text,
       edit:false,
       show_settings: false,
-      setting_alert: false,
       dnote: this.note // props are not reactive. To ensure reactivity remains, they must be used as local data properties.
     }
   },
@@ -69,9 +64,6 @@ export default {
     toggle_edit(){
       this.edit = !this.edit
     },
-    toggle_set_alert(){!this.setting_alert
-      this.setting_alert = !this.setting_alert
-    },
     toggle_settings(){
       // "cancel" action
       this.show_settings = !this.show_settings
@@ -85,15 +77,6 @@ export default {
       if(confirm('Delete note?')){
         this.$store.dispatch('delete_note', {columnid: this.columnid, noteid: this.dnote.id})
       }
-    },
-    add_note_alert(e){
-      this.$store.dispatch('add_note_alert', {columnid: this.columnid, noteid: this.dnote.id, time:e.target.value})
-      e.target.value = ''
-      this.toggle_settings()
-    },
-    delete_note_alerts(){
-      this.$store.dispatch('delete_note_alerts', {columnid: this.columnid, noteid: this.dnote.id})
-      this.toggle_settings()
     }
   }
 }
