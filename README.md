@@ -5,8 +5,11 @@ This is a very simple project I started to help me with work related time keepin
 There is no backend required for the application as it uses the localStorage to keep track of data.
 
 <p align="center">
-    <img height="400" src="https://github.com/j-000/scratchpad/blob/master/frontend/src/assets/images/github/headerimage1.png">
+    <img height="400" src="https://github.com/j-000/scratchpad/blob/master/frontend/src/assets/images/github/headerimage2.png">
 </p>
+
+## Colaborators so far (1)
+[@rasliche](https://github.com/rasliche)
 
 
 This applications targets work productivity. If you're like me and need to keep track of how long you take
@@ -45,6 +48,7 @@ Feel free to make some suggestions, add new features and whatnot.
 ### Ideas for improvement:
 - [x] - Add a logo
 - [x] - Add more tabs/columns
+- [x] - Time keeping
 - [ ] - Move todos to different tabs
 - [ ] - Add alert functionaity to the todos
 - [ ] - Leverage 3rd party APIs for alerts (like twilio, SMTP or browser notifications API)

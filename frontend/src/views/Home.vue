@@ -7,7 +7,7 @@
             <a @click="add_new_column" href="javascript:void(0)" class="new_tab nav-link bg-info text-white"><font-awesome-icon icon="plus" /> New</a>
           </li>
           <li class="nav-item mr-2">
-            <a @click="show_timers_tab" href="javascript:void(0)" class="nav-link">My timers</a>
+            <a @click="show_timers_tab" href="javascript:void(0)" class="nav-link">My timers ({{timers.length}})</a>
           </li>
           <Tab v-for="column in columns" :key="column.id" :column="column" />
         </ul>
