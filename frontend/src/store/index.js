@@ -1,11 +1,14 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import timer from './timer'
 
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
+  modules: {
+    timer
+  },
   state:{
-    timers: [],
     activeTab:'',
     columns:[{
       id:1,
@@ -73,15 +76,6 @@ const store = new Vuex.Store({
       var a = alerts.filter((alert) => alert.id === alertobj.id)[0]
       if(a){
         alerts.splice(alerts.indexOf(a), 1)
-      }
-    },
-    ADD_TIMER({timers}, timerobj){
-      timers.push(timerobj)
-    },
-    DELETE_TIMER({timers}, timerid){
-      var timer_to_delete = timers.filter((t) => t.id === timerid)[0]
-      if(timer_to_delete){
-        timers.splice(timers.indexOf(timer_to_delete), 1)
       }
     },
     ADD_NOTE_ALERT({columns}, {columnid, noteid, alertobj}){
@@ -154,12 +148,6 @@ const store = new Vuex.Store({
     },
     update_state({commit}, state){
       commit('UPDATE_STATE', state)
-    },
-    add_timer({commit}, {id, note, timer, created}){
-      commit('ADD_TIMER', {id, note, timer, created})
-    },
-    delete_timer({commit}, timerid){
-      commit('DELETE_TIMER', timerid)
     },
     add_note_alert({commit}, {columnid, noteid, time}){
       var alertobj = {

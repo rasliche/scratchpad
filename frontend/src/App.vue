@@ -25,7 +25,7 @@ export default {
     setInterval(()=>{
       localStorage.setItem('state',JSON.stringify(this.$store.state))
       this.$store.dispatch('calculate_used_storage')
-    }, 10000)
+    }, 60000)
   },
   computed: mapState({
     alerts: (state) => state.alerts

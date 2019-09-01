@@ -32,7 +32,7 @@ export default  {
     },
     ...mapState({
       columns: state => state.columns,
-      timers: state => state.timers,
+      timers: state => state.timer.timers,
       activeTab: state => state.activeTab
     })
   },
