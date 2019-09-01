@@ -6,15 +6,20 @@
           <li class="nav-item mr-2">
             <a @click="add_new_column" href="javascript:void(0)" class="new_tab nav-link bg-info text-white"><font-awesome-icon icon="plus" /> New</a>
           </li>
+          <li class="nav-item mr-2">
+            <a @click="show_timers_tab" href="javascript:void(0)" class="nav-link">My timers</a>
+          </li>
           <Tab v-for="column in columns" :key="column.id" :column="column" />
         </ul>
         <Scratchpad v-if="active_column" :column="active_column" />
+        <Timerspad v-if="activeTab === 'timers_tab'" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import Timerspad from '../components/pads/Timerspad'
 import Scratchpad from '../components/pads/Scratchpad'
 import Tab from '../components/Tab'
 
@@ -24,6 +29,7 @@ export default  {
   name:'Home',
   components:{
     Scratchpad,
+    Timerspad,
     Tab
   },
   computed:{
@@ -37,6 +43,9 @@ export default  {
     })
   },
   methods:{
+    show_timers_tab(){
+      this.$store.dispatch('update_active_tab', 'timers_tab')
+    },
     add_new_column(){
       this.$store.dispatch('add_new_column', {title: 'Change me'})
     }
