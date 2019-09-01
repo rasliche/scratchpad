@@ -34,7 +34,7 @@ export default {
   methods:{
     delete_timer(){
       if(confirm('Delete time entry?')){
-        this.$store.dispatch('delete_timer', this.timer.id)
+        this.$store.dispatch('timer/delete_timer', this.timer.id)
       }
     }
   }

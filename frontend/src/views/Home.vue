@@ -48,7 +48,7 @@ export default  {
     all_todos_not_done_count(){return this.$store.getters.all_todos_not_done_count},
     ...mapState({
       columns: state => state.columns,
-      timers: state => state.timers
+      timers: state => state.timer.timers
     })
   }
 }
