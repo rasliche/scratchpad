@@ -33,10 +33,12 @@ working on certain tasks, then this tool may help you.
 ### Project setup
 ```
 git clone https://github.com/j-000/scratchpad.git
+git branch "yourusername"
+git checkout "yourusername"
 npm install
 npm run serve
 ```
-Now do some coding and create a pull request 
+Now do some coding. Master branch is protected from force pull requests. You need to create a new branch first (call it anything).
 
 Feel free to make some suggestions, add new features and whatnot.
 
