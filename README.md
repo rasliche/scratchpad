@@ -43,8 +43,8 @@ Now do some coding. Master branch is protected from force pull requests. You nee
 Feel free to make some suggestions, add new features and whatnot.
 
 ### Ideas for improvement:
-- [ x ] - Add a logo
-- [ x ] - Add more tabs/columns
+- [x] - Add a logo
+- [x] - Add more tabs/columns
 - [ ] - Move todos to different tabs
 - [ ] - Add alert functionaity to the todos
 - [ ] - Leverage 3rd party APIs for alerts (like twilio, SMTP or browser notifications API)
