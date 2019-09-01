@@ -10,11 +10,13 @@
           <StorageState />
         </li>
         <li class="nav-item pt-2">
-          <p class="mb-0 p-2"><router-link to="/"> Home</router-link></p>
+          <p class="mb-0 p-2">
+            <font-awesome-icon icon="home" class="mr-2" /> <router-link to="/">Home</router-link>
+          </p>
         </li>
         <li class="nav-item pt-2">
           <p class="mb-0 p-2">
-            <font-awesome-icon icon="cog" /><router-link to="/settings"> Settings</router-link>
+            <font-awesome-icon icon="cog" class="mr-2" /><router-link to="/settings">Settings</router-link>
           </p>
         </li>
       </ul>
@@ -35,5 +37,9 @@ export default {
 </script>
 
 <style>
-
+@media screen and (max-width: 600px) {
+  img.nav-brand{
+    display: none;
+  }
+}
 </style>
