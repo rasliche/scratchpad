@@ -19,6 +19,12 @@ const store = new Vuex.Store({
     usedStorage: 0
   },
   mutations:{
+    DELETE_COLUMN({columns}, {columnid}){
+      var col = columns.filter((c)=>c.id === columnid)[0]
+      if(col){
+        columns.splice(columns.indexOf(col), 1)
+      }
+    },
     SAVE_NEW_TITLE({columns}, {columnid, newtitle}){
       var col = columns.filter((c)=>c.id === columnid)[0]
       if(col){
@@ -108,8 +114,12 @@ const store = new Vuex.Store({
     }
   },
   actions:{
+    delete_column({commit}, {columnid}){
+      commit('DELETE_COLUMN', {columnid})
+    },
     add_new_column({commit, state}, {title}){
-      var nextid = state.columns[ state.columns.length - 1 ].id + 1
+      // get next id or assign 1 if no columns exist
+      var nextid = state.columns.length > 0 ? state.columns[ state.columns.length - 1 ].id + 1 : 1
       var newcolobj = {
         id: nextid,
         title,
