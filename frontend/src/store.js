@@ -6,6 +6,7 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   state:{
     timers: [],
+    activeTab:'',
     columns:[{
       id:1,
       title: 'Things to do',
@@ -15,6 +16,18 @@ const store = new Vuex.Store({
     usedStorage: 0
   },
   mutations:{
+    SAVE_NEW_TITLE({columns}, {columnid, newtitle}){
+      var col = columns.filter((c)=>c.id === columnid)[0]
+      if(col){
+        col.title = newtitle
+      }
+    },
+    UPDATE_ACTIVE_TAB(state, columnid){
+      state.activeTab = columnid
+    },
+    ADD_NEW_COLUMN({columns}, newcolobj){
+      columns.push(newcolobj)
+    },
     UPDATE_STATE(state, newstate){
       state.columns = newstate.columns
       state.timers = newstate.timers
@@ -101,6 +114,21 @@ const store = new Vuex.Store({
     }
   },
   actions:{
+    add_new_column({commit, state}, {title}){
+      var nextid = state.columns[ state.columns.length - 1 ].id + 1
+      var newcolobj = {
+        id: nextid,
+        title,
+        notes:[]
+      }
+      commit('ADD_NEW_COLUMN', newcolobj)
+    },
+    save_new_title({commit}, {columnid, newtitle}){
+      commit('SAVE_NEW_TITLE', {columnid, newtitle})
+    },
+    update_active_tab({commit}, columnid){
+      commit('UPDATE_ACTIVE_TAB', columnid)
+    },
     add_note({commit}, {columnid, note}){
       commit('ADD_NOTE', {columnid, note})
     },
