@@ -7,13 +7,6 @@
 import {mapState} from 'vuex'
 export default {
   name: 'StorageState',
-  data(){
-    return {
-      styleObject: {
-        width: '4.6!important'
-      }
-    }
-  },
   computed:{
     ...mapState({
     usedStorage: state => ((state.usedStorage / 5000)*100).toFixed(2)

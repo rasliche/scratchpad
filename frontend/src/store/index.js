@@ -39,7 +39,7 @@ const store = new Vuex.Store({
     },
     UPDATE_STATE(state, newstate){
       state.columns = newstate.columns
-      state.timers = newstate.timers
+      state.timer = newstate.timer
     },
     ADD_NOTE({columns}, {columnid, note}){
       var column = columns.filter((col) => col.id === columnid)[0]
