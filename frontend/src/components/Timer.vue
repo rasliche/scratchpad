@@ -72,4 +72,4 @@ export default {
 .navbar-nav{
   flex-direction: unset!important;
 }
-</style>
+</style> 
