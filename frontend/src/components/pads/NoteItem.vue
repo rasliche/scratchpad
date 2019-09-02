@@ -2,7 +2,7 @@
   <div class="list-group-item mb-2">
     <small class="spt font-italic">{{ dnote.created | toHumanDate }}</small>
     <small :class="dnote.done ? 'pts badge badge-success' : 'pts badge badge-warning'">{{ dnote.done ? 'Done' : '' }}</small>
-    <small class="pts2">#{{ dnote.id }}</small>
+    <small class="pts2"><span v-if="error_message" class="text-danger error-message">{{error_message}}</span> #{{ dnote.id }}</small>
 
     <p v-if="!edit" class="text-left mt-3 mb-3 mr-5 pr-5">{{ dnote.text }}</p>
     <p v-else>
@@ -17,6 +17,10 @@
         <span class="mr-3">
           <a v-if="!edit" href="javascript:void(0)" class="text-info" @click="toggle_edit"><font-awesome-icon icon="pen"/> Edit</a>
           <a v-else href="javascript:void(0)" class="text-info" @click="save_edit"><font-awesome-icon icon="pen"/> Save</a>
+        </span>
+        <span class="mr-3">
+          <a href="javascript:void(0)" class="text-info mr-2" @click="set_reminder"><font-awesome-icon icon="clock"/> Remind me</a>
+          <input @keyup.enter="save_reminder" v-if="setting_reminder" v-model="reminder_input" type="text" placeholder=" hh:mm (Enter to save)">
         </span>
         <span class="mr-3">
           <a href="javascript:void(0)" class="text-danger" @click="delete_note"><font-awesome-icon icon="trash"/> Delete</a>
@@ -38,7 +42,10 @@ export default {
       new_text: this.note.text,
       edit:false,
       show_settings: false,
-      dnote: this.note // props are not reactive. To ensure reactivity remains, they must be used as local data properties.
+      dnote: this.note, // props are not reactive. To ensure reactivity remains, they must be used as local data properties.
+      reminder_input: '',
+      setting_reminder: false,
+      error_message: ''
     }
   },
   props: {
@@ -57,6 +64,24 @@ export default {
     }
   },
   methods:{
+    save_reminder(){
+      // eslint-disable-next-line
+      console.log(this.reminder_input);
+
+      if(this.reminder_input.match(/^\d\d:\d\d$/gsi)){
+        // save new alert t state
+        this.reminder_input = ''
+        this.toggle_settings()
+      }else{
+        this.error_message = 'Entry must be formatted hh:mm.'
+        setTimeout(()=>{
+          this.error_message = ''
+        }, 3000)
+      }
+    },
+    set_reminder(){
+      this.setting_reminder = !this.setting_reminder
+    },
     save_edit(){
       this.$store.dispatch('update_note', {columnid: this.columnid, noteid: this.dnote.id, text: this.new_text})
       this.toggle_settings()
@@ -67,7 +92,7 @@ export default {
     toggle_settings(){
       // "cancel" action
       this.show_settings = !this.show_settings
-      this.setting_alert = false
+      this.setting_reminder = false
       this.edit = false
     },
     toggle_done(){
@@ -83,6 +108,7 @@ export default {
 </script>
 
 <style>
+
 input:focus, input.form-control:focus{
   outline-width: 0 !important;
   box-shadow: none;
