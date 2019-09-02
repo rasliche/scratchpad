@@ -19,6 +19,31 @@ const store = new Vuex.Store({
     usedStorage: 0
   },
   mutations:{
+    ADD_NOTE_ALERT({columns}, {columnid, noteid, alertobj}){
+      var col = columns.filter((c)=> c.id === columnid)[0]
+      if(col){
+        var note = col.notes.filter((n) => n.id === noteid)[0]
+        if(note){
+          if(note.alerts){
+            note.alerts.push(alertobj)
+          }else{
+            note['alerts'] = []
+            note.alerts.push(alertobj)
+          }
+        }
+      }
+    },
+    DELETE_NOTE_ALERTS({columns}, {columnid, noteid}){
+      var col = columns.filter((c) => c.id === columnid)[0]
+      if (col){
+        var note = col.notes.filter((note) => note.id === noteid)[0]
+        if(note){
+          if(note.alerts){
+            note.alerts = []
+          }
+        }
+      }
+    },
     DELETE_COLUMN({columns}, {columnid}){
       var col = columns.filter((c)=>c.id === columnid)[0]
       if(col){
@@ -84,36 +109,21 @@ const store = new Vuex.Store({
         alerts.splice(alerts.indexOf(a), 1)
       }
     },
-    ADD_NOTE_ALERT({columns}, {columnid, noteid, alertobj}){
-      var col = columns.filter((c)=> c.id === columnid)[0]
-      if(col){
-        var note = col.notes.filter((n) => n.id === noteid)[0]
-        if(note){
-          if(note.alerts){
-            note.alerts.push(alertobj)
-          }else{
-            note['alerts'] = []
-            note.alerts.push(alertobj)
-          }
-        }
-      }
-    },
-    DELETE_NOTE_ALERTS({columns}, {columnid, noteid}){
-      var col = columns.filter((c) => c.id === columnid)[0]
-      if (col){
-        var note = col.notes.filter((note) => note.id === noteid)[0]
-        if(note){
-          if(note.alerts){
-            note.alerts = []
-          }
-        }
-      }
-    },
     UPDATE_STORAGE_USED(store, newValue){
       store.usedStorage = newValue
     }
   },
   actions:{
+    add_note_alert({commit}, {columnid, noteid, time}){
+      var alertobj = {
+        time,
+        completed: false
+      }
+      commit('ADD_NOTE_ALERT', {columnid, noteid, alertobj})
+    },
+    delete_note_alerts({commit}, {columnid, noteid}){
+      commit('DELETE_NOTE_ALERTS', {columnid, noteid})
+    },
     delete_column({commit}, {columnid}){
       commit('DELETE_COLUMN', {columnid})
     },
@@ -158,16 +168,6 @@ const store = new Vuex.Store({
     },
     update_state({commit}, state){
       commit('UPDATE_STATE', state)
-    },
-    add_note_alert({commit}, {columnid, noteid, time}){
-      var alertobj = {
-        time,
-        completed: false
-      }
-      commit('ADD_NOTE_ALERT', {columnid, noteid, alertobj})
-    },
-    delete_note_alerts({commit}, {columnid, noteid}){
-      commit('DELETE_NOTE_ALERTS', {columnid, noteid})
     },
     calculate_used_storage({commit}){
       var _lsTotal = 0, _xLen, _x

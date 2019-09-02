@@ -3,8 +3,13 @@
     <small class="spt font-italic">{{ dnote.created | toHumanDate }}</small>
     <small :class="dnote.done ? 'pts badge badge-success' : 'pts badge badge-warning'">{{ dnote.done ? 'Done' : '' }}</small>
     <small class="pts2"><span v-if="error_message" class="text-danger error-message">{{error_message}}</span> #{{ dnote.id }}</small>
+    <p class="pts3">
+      <span v-for="notealert in notealerts" :key="notealert.time" class="badge badge-warning mr-2">
+        <font-awesome-icon icon="clock"/> {{notealert.time}}
+      </span>
+    </p>
 
-    <p v-if="!edit" class="text-left mt-3 mb-3 mr-5 pr-5">{{ dnote.text }}</p>
+    <p v-if="!edit" class="text-left mt-5 mb-3 mr-5 pr-5">{{ dnote.text }}</p>
     <p v-else>
       <input @keyup.enter="save_edit" v-model="new_text" type="text" class="form-control border-warning mt-3 mb-3 mr-5">
     </p>
@@ -65,11 +70,8 @@ export default {
   },
   methods:{
     save_reminder(){
-      // eslint-disable-next-line
-      console.log(this.reminder_input);
-
       if(this.reminder_input.match(/^\d\d:\d\d$/gsi)){
-        // save new alert t state
+        this.$store.dispatch('add_note_alert', {columnid: this.columnid, noteid: this.dnote.id, time: this.reminder_input})
         this.reminder_input = ''
         this.toggle_settings()
       }else{
@@ -103,6 +105,14 @@ export default {
         this.$store.dispatch('delete_note', {columnid: this.columnid, noteid: this.dnote.id})
       }
     }
+  },
+  computed:{
+    notealerts(){
+      // eslint-disable-next-line
+      console.log(this.dnote.alerts);
+      
+      return this.dnote.alerts
+    }
   }
 }
 </script>
@@ -122,6 +132,10 @@ input:focus, input.form-control:focus{
 .pts2{
   position: absolute!important;
   right: 10px!important;
+}
+.pts3{
+  position: absolute!important;
+  left: 20px!important;
 }
 .pts{
   position: absolute!important;
