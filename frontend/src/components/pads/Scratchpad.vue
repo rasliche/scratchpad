@@ -56,6 +56,7 @@ export default {
         id: Math.floor(Math.random() * 100000),
         text: notetext,
         done: false,
+        alerts: [],
         created: new Date().toUTCString()
       }
       if(notetext != ''){
