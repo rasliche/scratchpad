@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <Navbar />
-    <Alert v-for="alert in alerts" :key="alert.id"  :alert="alert"/>
+    <Alert class="alert-pos" v-for="alert in alerts" :key="alert.id"  :alert="alert"/>
     <router-view/>
   </div>
 </template>
@@ -34,12 +34,33 @@ export default {
     }, 60000)
 
     // start the note alerts sentinel
+    setInterval((()=>{
+      this.columns.forEach(col => {
+        col.notes.forEach(note => {
+          var incomplete_reminders = note.alerts.filter((alert) => alert.completed === false)
+          var now = new Date()
+          var h = now.getHours()
+          var m = now.getMinutes()
+          incomplete_reminders.forEach((reminder) => {
+            var rem_h = parseInt(reminder.time.split(':')[0])
+            var rem_m = parseInt(reminder.time.split(':')[1])
+            if(rem_h === h || rem_h < h){
+              if(rem_m === m || rem_m < m){
+                this.$store.dispatch('add_alert', {message: `REMINDER: ${note.text}`, error: false})
+                this.$store.dispatch('update_reminder', {columnid:col.id, noteid:note.id, reminderid: reminder.id})
+              }
+            }
+          })
+        })
+      });
+    }), 10000)
     
 
   },
   computed: {
     ...mapState({
-    alerts: state => state.alerts
+    alerts: state => state.alerts,
+    columns: state => state.columns
   })}
 }
 </script>
@@ -54,5 +75,12 @@ export default {
 }
 html{
   overflow-x:hidden;
+}
+
+.alert-pos{
+  position: absolute!important;
+  right: 20px;
+  top:120px;
+  z-index: 201010;
 }
 </style>
