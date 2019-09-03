@@ -10,10 +10,10 @@
         <input type="text" class="form-control form-control-sm col-sm-4" id="taskName" v-model="taskName" placeholder="Name (e.g eat bananas)" required>
       </div>
       <div class="form-group row">
-        <input type="text" class="form-control form-control-sm col-sm-4" id="taskDuration" v-model="taskDuration" placeholder="Duration (in HH:MM format)" required>
+        <input type="text" class="form-control form-control-sm col-sm-4" id="taskDuration" v-model="taskDuration" placeholder="Duration of task (in HH:MM format)" required>
       </div>
       <div class="form-group row">
-        <input type="text" class="form-control form-control-sm col-sm-4" id="taskTime" v-model="taskTime" placeholder="Time (in HH:MM format)" required>
+        <input type="text" class="form-control form-control-sm col-sm-4" id="taskTime" v-model="taskTime" placeholder="When to do task (in HH:MM format)" required>
       </div>
       <div class="form-group row">
         <button type="submit" class="btn btn-outline-info btn-sm col-sm-1">Add Task</button>
@@ -52,16 +52,27 @@ export default {
     addTask() {
       // Remove white spaces and extract hrs:min
       let [hrs, min] = this.taskDuration.trim('').replace(/ /g, '').split(':');
-      const duration = { hrs, min };
+      const duration = {
+        hrs: parseInt(hrs),
+        min: parseInt(min),
+      };
 
       [hrs, min] = this.taskTime.trim('').replace(/ /g, '').split(':');
-      const time = { hrs, min };
+      const time = {
+        hrs: parseInt(hrs),
+        min: parseInt(min),
+      };
 
       const id = Math.floor(Math.random() * 100000);
-      const name = this.taskName
+      const name = this.taskName;
 
       // Add task to our store
-      this.add_task({ id, name, time, duration })
+      this.add_task({ id, name, time, duration });
+
+      // Clear input fields
+      this.taskDuration = '';
+      this.taskTime = '';
+      this.taskName = '';
     },
   },
   created() {
