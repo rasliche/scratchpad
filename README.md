@@ -8,8 +8,9 @@ There is no backend required for the application as it uses the localStorage to 
     <img height="400" src="https://github.com/j-000/scratchpad/blob/master/frontend/src/assets/images/github/headerimage2.png">
 </p>
 
-## Colaborators so far (1)
+## Colaborators so far (2)
 [@rasliche](https://github.com/rasliche)
+[@nimitbhargava](https://github.com/nimitbhargava)
 
 
 This applications targets work productivity. If you're like me and need to keep track of how long you take
@@ -22,7 +23,7 @@ working on certain tasks, then this tool may help you.
 
 
 ## Tech used:
-- [Vuesjs](https://vuejs.org/) - single page applications made easy.
+- [VueJS](https://vuejs.org/) - single page applications made easy.
 - [Vuex](https://vuex.vuejs.org/) - for easy state management.
 - [Bootstrap](https://getbootstrap.com/) for people that are terrible with CSS (like me).
 

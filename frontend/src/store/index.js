@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import timer from './timer'
 import regularTasks from './regularTasks';
+import helperFunctions from './helperFunctions'
 
 Vue.use(Vuex)
 
@@ -21,7 +22,19 @@ const store = new Vuex.Store({
     usedStorage: 0,
   },
   mutations:{
-    ADD_NOTE_ALERT({columns}, {columnid, noteid, alertobj}){
+    UPDATE_REMINDER({columns}, {columnid, noteid, reminderid}){
+      var column = columns.filter((col) => col.id === columnid)[0]
+      if(column){
+        var note = column.notes.filter((n) => n.id === noteid)[0]
+        if(note){
+          var reminder = note.alerts.filter((rem) => rem.id === reminderid)[0]
+          if(reminder){
+            reminder.completed = true
+          }
+        }
+      }
+    },
+    ADD_REMINDER({columns}, {columnid, noteid, alertobj}){
       var col = columns.filter((c)=> c.id === columnid)[0]
       if(col){
         var note = col.notes.filter((n) => n.id === noteid)[0]
@@ -35,13 +48,14 @@ const store = new Vuex.Store({
         }
       }
     },
-    DELETE_NOTE_ALERTS({columns}, {columnid, noteid}){
+    DELETE_REMINDER({columns}, {columnid, noteid, reminderid}){
       var col = columns.filter((c) => c.id === columnid)[0]
       if (col){
         var note = col.notes.filter((note) => note.id === noteid)[0]
         if(note){
-          if(note.alerts){
-            note.alerts = []
+          var reminder = note.alerts.filter((rem) => rem.id === reminderid)[0]
+          if(reminder){
+            note.alerts.splice(note.alerts.indexOf(reminder), 1)
           }
         }
       }
@@ -117,22 +131,25 @@ const store = new Vuex.Store({
     }
   },
   actions:{
-    add_note_alert({commit}, {columnid, noteid, time}){
+    update_reminder({commit}, {columnid, noteid, reminderid}){
+      commit('UPDATE_REMINDER', {columnid, noteid, reminderid})
+    },
+    add_reminder({commit, state}, {columnid, noteid, time}){     
       var alertobj = {
+        id: helperFunctions.next_reminder_id(state, columnid, noteid),
         time,
         completed: false
       }
-      commit('ADD_NOTE_ALERT', {columnid, noteid, alertobj})
+      commit('ADD_REMINDER', {columnid, noteid, alertobj})
     },
-    delete_note_alerts({commit}, {columnid, noteid}){
-      commit('DELETE_NOTE_ALERTS', {columnid, noteid})
+    delete_note_alerts({commit}, {columnid, noteid, reminderid}){
+      commit('DELETE_REMINDER', {columnid, noteid, reminderid})
     },
     delete_column({commit}, {columnid}){
       commit('DELETE_COLUMN', {columnid})
     },
     add_new_column({commit, state}, {title}){
-      // get next id or assign 1 if no columns exist
-      var nextid = state.columns.length > 0 ? state.columns[ state.columns.length - 1 ].id + 1 : 1
+      var nextid = helperFunctions.next_column_id(state)
       var newcolobj = {
         id: nextid,
         title,
@@ -146,7 +163,14 @@ const store = new Vuex.Store({
     update_active_tab({commit}, columnid){
       commit('UPDATE_ACTIVE_TAB', columnid)
     },
-    add_note({commit}, {columnid, note}){
+    add_note({commit, state}, {columnid, text}){
+      var note = {
+        id: helperFunctions.next_note_id(state, columnid),
+        text,
+        done: false,
+        alerts: [],
+        created: new Date().toUTCString()
+      }
       commit('ADD_NOTE', {columnid, note})
     },
     update_note({commit}, {columnid, noteid, text}){
@@ -162,9 +186,6 @@ const store = new Vuex.Store({
       if(!error){error = false}
       var alertobj = {id: `${new Date().getTime().toString()}`, message, error }
       commit('ADD_ALERT', alertobj)
-      setTimeout(()=>{
-        commit('REMOVE_ALERT', alertobj)
-      }, 4000)
     },
     remove_alert({commit}, alertobj){
       commit('REMOVE_ALERT', alertobj)

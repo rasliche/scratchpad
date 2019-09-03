@@ -70,12 +70,12 @@ export default {
   },
   methods:{
     save_reminder(){
-      if(this.reminder_input.match(/^\d\d:\d\d$/gsi)){
-        this.$store.dispatch('add_note_alert', {columnid: this.columnid, noteid: this.dnote.id, time: this.reminder_input})
+      if(this.reminder_input.match(/^\d\d:\d\d$/gsi) && this.reminder_input.match(/^[0-2][0-9]:[0-5][0-9]$/)){
+        this.$store.dispatch('add_reminder', {columnid: this.columnid, noteid: this.dnote.id, time: this.reminder_input})
         this.reminder_input = ''
         this.toggle_settings()
       }else{
-        this.error_message = 'Entry must be formatted hh:mm.'
+        this.error_message = 'Entry must be 24h based.'
         setTimeout(()=>{
           this.error_message = ''
         }, 3000)
@@ -108,10 +108,8 @@ export default {
   },
   computed:{
     notealerts(){
-      // eslint-disable-next-line
-      console.log(this.dnote.alerts);
-      
-      return this.dnote.alerts
+      // filter reminders that have not been raised     
+      return this.dnote.alerts.filter((alert) => alert.completed === false)
     }
   }
 }

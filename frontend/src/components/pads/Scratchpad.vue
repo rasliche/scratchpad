@@ -52,15 +52,8 @@ export default {
         notetext = e.target.value
       }
       var columnid = column.id
-      var note = {
-        id: Math.floor(Math.random() * 100000),
-        text: notetext,
-        done: false,
-        alerts: [],
-        created: new Date().toUTCString()
-      }
       if(notetext != ''){
-        this.$store.dispatch('add_note', {columnid, note})
+        this.$store.dispatch('add_note', {columnid, text: notetext})
         if(e){
           e.target.value = ''
         }else{
