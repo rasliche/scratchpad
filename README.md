@@ -22,7 +22,7 @@ working on certain tasks, then this tool may help you.
 
 
 ## Tech used:
-- [Vuesjs](https://vuejs.org/) - single page applications made easy.
+- [VueJS](https://vuejs.org/) - single page applications made easy.
 - [Vuex](https://vuex.vuejs.org/) - for easy state management.
 - [Bootstrap](https://getbootstrap.com/) for people that are terrible with CSS (like me).
 
