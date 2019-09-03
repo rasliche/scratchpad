@@ -8,7 +8,7 @@ There is no backend required for the application as it uses the localStorage to 
     <img height="400" src="https://github.com/j-000/scratchpad/blob/master/frontend/src/assets/images/github/headerimage2.png">
 </p>
 
-## Colaborators so far (2)
+## Colaborators so far (3)
 [@rasliche](https://github.com/rasliche) [@crispinkoech](https://github.com/crispinkoech) [@nimitbhargava](https://github.com/nimitbhargava)
 
 
