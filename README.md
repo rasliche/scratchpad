@@ -9,8 +9,7 @@ There is no backend required for the application as it uses the localStorage to 
 </p>
 
 ## Colaborators so far (2)
-[@rasliche](https://github.com/rasliche)
-[@nimitbhargava](https://github.com/nimitbhargava)
+[@rasliche](https://github.com/rasliche) [@crispinkoech](https://github.com/crispinkoech)
 
 
 This applications targets work productivity. If you're like me and need to keep track of how long you take
@@ -23,7 +22,7 @@ working on certain tasks, then this tool may help you.
 
 
 ## Tech used:
-- [VueJS](https://vuejs.org/) - single page applications made easy.
+- [Vuesjs](https://vuejs.org/) - single page applications made easy.
 - [Vuex](https://vuex.vuejs.org/) - for easy state management.
 - [Bootstrap](https://getbootstrap.com/) for people that are terrible with CSS (like me).
 
