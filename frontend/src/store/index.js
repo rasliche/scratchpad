@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import timer from './timer'
-import regularTasks from './regularTasks';
 import helperFunctions from './helperFunctions'
+import regularTasks from './regularTasks';
 
 Vue.use(Vuex)
 
