@@ -17,7 +17,7 @@ const mutations = {
   },
   UPDATE_TASK({ tasks }, { taskId, updates }) {
     const task_to_update = tasks.find((t) => t.id === taskId);
-
+    
     if (task_to_update) {
       const { name, time, duration, new_sprint } = updates;
 

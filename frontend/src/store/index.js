@@ -2,14 +2,14 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import timer from './timer'
 import helperFunctions from './helperFunctions'
-import regularTasks from './regularTasks';
+// import regularTasks from './regularTasks';
 
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
   modules: {
     timer,
-    regularTasks,
+    // regularTasks,
   },
   state:{
     activeTab:'',
