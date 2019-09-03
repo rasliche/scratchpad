@@ -43,12 +43,16 @@ npm run serve
 ```
 Now do some coding. Master branch is protected from force pull requests. You need to create a new branch first (call it anything).
 
+:arrow_right: Read [CONTRIBUTING.md](https://github.com/j-000/scratchpad/blob/master/CONTRIBUTING.md)
+
 Feel free to make some suggestions, add new features and whatnot.
 
 ### Ideas for improvement:
 - [x] - Add a logo
 - [x] - Add more tabs/columns
 - [x] - Time keeping
+- [x] - Note Alerts
+- [ ] - Regular Tasks
 - [ ] - Move todos to different tabs
 - [ ] - Add alert functionaity to the todos
 - [ ] - Leverage 3rd party APIs for alerts (like twilio, SMTP or browser notifications API)
