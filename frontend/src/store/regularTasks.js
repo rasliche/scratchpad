@@ -1,10 +1,12 @@
 const state = {
   tasks: [],
+  tempTimerInfo: [],
 };
 
 const getters = {
   tasksCount: state => state.tasks.length,
   tasks: state => state.tasks,
+  temp_timer_info: state => state.tempTimerInfo,
 };
 
 const mutations = {
@@ -38,6 +40,16 @@ const mutations = {
       tasks.splice(tasks.indexOf(task_to_delete), 1);
     }
   },
+  SAVE_TIMER_INFO({ tempTimerInfo }, timerInfo) {
+    tempTimerInfo.push(timerInfo);
+  },
+  DELETE_TIMER_INFO({ tempTimerInfo }, timerId) {
+    const timerInfo = tempTimerInfo.find(t => t.id === timerId);
+
+    if (timerInfo) {
+      tempTimerInfo.splice(tempTimerInfo.indexOf(timerInfo), 1);
+    }
+  }
 };
 
 const actions = {
@@ -49,6 +61,15 @@ const actions = {
   },
   delete_task({ commit }, taskId) {
     commit('DELETE_TASK', taskId);
+  },
+  save_timer_info({ commit }, { id, timerOn, duration, timerSave, start }) {
+    // Delete saved timer info for this timer, if any
+    commit('DELETE_TIMER_INFO', id);
+
+    commit('SAVE_TIMER_INFO', { id, timerOn, duration, timerSave, start });
+  },
+  delete_timer_info({ commit }, timerId) {
+    commit('DELETE_TIMER_INFO', timerId);
   },
 };
 

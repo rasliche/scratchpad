@@ -50,7 +50,7 @@
     <div v-else class="text-left">
       <span v-if="timerOn" class="mr-3">
         <a class="btn text-info" href="javascript:void(0)" @click="stopTimer">
-          <font-awesome-icon icon="stop" />Stop
+          <font-awesome-icon icon="stop" /> Stop
         </a>
       </span>
       <span v-else>
@@ -84,74 +84,102 @@ export default {
       start: null,
     };
   },
+  created() {
+    const taskId = this.task.id;
+    const info = this.temp_timer_info.find(t => t.id === taskId);
+
+    if (info) {
+      const { timerOn, timerSave, duration, start } = info;
+      this.timerOn = timerOn;
+      this.timerSave = timerSave;
+      this.duration = duration;
+      this.start = start;
+    }
+  },
+  beforeDestroy() {
+    const timerInfo = {
+      id: this.task.id,
+      timerOn: this.timerOn,
+      duration: this.duration,
+      timerSave: this.timerSave,
+      start: this.start,
+    };
+
+    this.save_timer_info(timerInfo);
+  },
   computed: {
-    ...mapGetters('regularTasks', [
-        'now',
-    ]),
+    ...mapGetters({
+        now: 'now',
+        temp_timer_info: 'regularTasks/temp_timer_info',
+    }),
     timer() {
-        return this.now - this.start;
+      return this.now - this.start;
     }
   },
   filters: {
-      toHumanDate(d) {
-          var duration = moment.duration(d)
-          var _h = duration.hours()
-          var _m = duration.minutes()
-          var _s = duration.seconds()
-          return `${_h < 10 ? "0" + _h : _h}:${_m < 10 ? "0" + _m : _m}:${_s < 10 ? "0" + _s : _s}`
-      },
+    toHumanDate(d) {
+      var duration = moment.duration(d)
+      var _h = duration.hours()
+      var _m = duration.minutes()
+      var _s = duration.seconds()
+      return `${_h < 10 ? "0" + _h : _h}:${_m < 10 ? "0" + _m : _m}:${_s < 10 ? "0" + _s : _s}`
+    },
   },
   methods: {
-      ...mapActions('regularTasks', [
-          'update_task',
-          'delete_task',
-      ]),
-      getRemainingTime() {
-          const timeToTask = moment();
-          const { hrs, min } = this.task.time;
+    ...mapActions('regularTasks', [
+      'update_task',
+      'delete_task',
+      'save_timer_info',
+      'delete_timer_info',
+    ]),
+    getRemainingTime() {
+      const timeToTask = moment();
+      const { hrs, min } = this.task.time;
 
-          timeToTask.hours(hrs);
-          timeToTask.minute(min);
+      timeToTask.hours(hrs);
+      timeToTask.minute(min);
 
-          if (timeToTask < this.now) {
-            // Task time for today has already passed, watch for tomorrow's day.
-            timeToTask.add(1, 'd');
-          }
-
-          if (this.formatTime) return timeToTask.calendar();
-
-          return moment(this.now).to(timeToTask);
-      },
-      deleteTask() {
-        this.delete_task(this.task.id);
-      },
-      startTimer() {
-        this.timerOn = true;
-        this.start = moment();
-      },
-      clearDuration() {
-        this.duration = 0;
-        this.timerOn = false;
-        this.timerSave = false;
-        this.start = null;
-      },
-      saveSprint() {
-        this.update_task({
-          taskId: this.task.id,
-          updates: {
-            new_sprint: this.duration,
-          },
-        });
-
-        this.clearDuration();
-      },
-      stopTimer() {
-        this.duration = this.timer;
-        this.timerSave = true;
-      },
-      toggleTime() {
-        this.formatTime = !this.formatTime;
+      if (timeToTask < this.now) {
+        // Task time for today has already passed, watch for tomorrow's day.
+        timeToTask.add(1, 'd');
       }
+
+      if (this.formatTime) return timeToTask.calendar();
+
+      return moment(this.now).to(timeToTask);
+    },
+    deleteTask() {
+      this.delete_task(this.task.id);
+    },
+    startTimer() {
+      this.timerOn = true;
+      this.start = moment();
+    },
+    clearDuration() {
+      this.duration = 0;
+      this.timerOn = false;
+      this.timerSave = false;
+      this.start = null;
+
+      this.delete_timer_info(this.task.id);
+    },
+    saveSprint() {
+      this.update_task({
+        taskId: this.task.id,
+        updates: {
+          new_sprint: this.duration,
+        },
+      });
+
+      this.clearDuration();
+    },
+    stopTimer() {
+      this.duration = this.timer;
+      this.timerSave = true;
+    },
+    toggleTime() {
+      this.formatTime = !this.formatTime;
+    }
   }
 }
 </script>
@@ -189,6 +217,6 @@ export default {
   }
 }
 .task-header {
-padding-left: 0.7rem; 
+  padding-left: 0.7rem; 
 }
 </style>
