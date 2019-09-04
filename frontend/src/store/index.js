@@ -2,14 +2,14 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import timer from './timer'
 import helperFunctions from './helperFunctions'
-// import regularTasks from './regularTasks';
+import regularTasks from './regularTasks';
 
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
   modules: {
     timer,
-    // regularTasks,
+    regularTasks,
   },
   state:{
     activeTab:'',
@@ -79,9 +79,9 @@ const store = new Vuex.Store({
       columns.push(newcolobj)
     },
     UPDATE_STATE(state, newstate){
-      state.columns = newstate.columns
-      state.timer = newstate.timer
-      state.regularTasks = newstate.regularTasks  
+      if (newstate.columns) state.columns = newstate.columns
+      if (newstate.timer) state.timer = newstate.timer
+      if (newstate.regularTasks) state.regularTasks = newstate.regularTasks  
     },
     ADD_NOTE({columns}, {columnid, note}){
       var column = columns.filter((col) => col.id === columnid)[0]
