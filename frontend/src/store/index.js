@@ -24,6 +24,21 @@ const store = new Vuex.Store({
     now: moment(),
   },
   mutations:{
+    MOVE_NOTE({columns}, {fromColId, toColId, noteid}){
+      // get fromCol and toCol objects
+      var fromCol = columns.filter(col => col.id === fromColId)[0]
+      var toCol = columns.filter(col => col.id === toColId)[0]
+      if(fromCol && toCol){
+        // get the note object
+        var note = fromCol.notes.filter(n => n.id === noteid)[0]
+        if(note){
+          // push note to toCol
+          toCol.notes.push(note)
+          // delete note from fromCol
+          fromCol.notes.splice(fromCol.notes.indexOf(note), 1)
+        }
+      }
+    },
     UPDATE_REMINDER({columns}, {columnid, noteid, reminderid}){
       var column = columns.filter((col) => col.id === columnid)[0]
       if(column){
@@ -136,6 +151,9 @@ const store = new Vuex.Store({
     },
   },
   actions:{
+    move_note({commit}, {fromColId, toColId, noteid}){
+      commit('MOVE_NOTE', {fromColId, toColId, noteid})
+    },
     update_reminder({commit}, {columnid, noteid, reminderid}){
       commit('UPDATE_REMINDER', {columnid, noteid, reminderid})
     },

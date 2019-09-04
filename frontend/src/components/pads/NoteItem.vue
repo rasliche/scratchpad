@@ -24,8 +24,14 @@
           <a v-else href="javascript:void(0)" class="text-info" @click="save_edit"><font-awesome-icon icon="pen"/> Save</a>
         </span>
         <span class="mr-3">
-          <a href="javascript:void(0)" class="text-info mr-2" @click="set_reminder"><font-awesome-icon icon="clock"/> Remind me</a>
+          <a href="javascript:void(0)" class="text-info" @click="set_reminder"><font-awesome-icon icon="clock"/> Remind me</a>
           <input @keyup.enter="save_reminder" v-if="setting_reminder" v-model="reminder_input" type="text" placeholder=" hh:mm (Enter to save)">
+        </span>
+        <span class="mr-3">
+          <select @change="move_note_across">
+            <option>Move to ...</option>
+            <option v-for="col in columns" :key="col.id" :value="col.id">{{ col.title }}</option>
+          </select>
         </span>
         <span class="mr-3">
           <a href="javascript:void(0)" class="text-danger" @click="delete_note"><font-awesome-icon icon="trash"/> Delete</a>
@@ -40,6 +46,7 @@
 
 <script>
 import moment from 'moment'
+import {mapState} from 'vuex'
 export default {
   name: 'NoteItem',
   data(){
@@ -69,6 +76,12 @@ export default {
     }
   },
   methods:{
+    move_note_across(e){
+      var fromColId = parseInt(this.columnid)
+      var toColId = parseInt(e.target.value)
+      var noteid = this.dnote.id      
+      this.$store.dispatch('move_note', {fromColId, toColId, noteid})
+    },
     save_reminder(){
       if(this.reminder_input.match(/^\d\d:\d\d$/gsi) && this.reminder_input.match(/^[0-2][0-9]:[0-5][0-9]$/)){
         this.$store.dispatch('add_reminder', {columnid: this.columnid, noteid: this.dnote.id, time: this.reminder_input})
@@ -107,6 +120,7 @@ export default {
     }
   },
   computed:{
+    ...mapState(['columns']),
     notealerts(){
       // filter reminders that have not been raised     
       return this.dnote.alerts.filter((alert) => alert.completed === false)
