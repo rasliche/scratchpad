@@ -1,14 +1,10 @@
-import moment from 'moment';
-
 const state = {
   tasks: [],
-  now: moment(new Date()),
 };
 
 const getters = {
   tasksCount: state => state.tasks.length,
   tasks: state => state.tasks,
-  now: state => state.now,
 };
 
 const mutations = {
@@ -42,9 +38,6 @@ const mutations = {
       tasks.splice(tasks.indexOf(task_to_delete), 1);
     }
   },
-  UPDATE_GLOBAL_TIME(state) {
-    state.now = moment(new Date);
-  }
 };
 
 const actions = {
@@ -57,11 +50,6 @@ const actions = {
   delete_task({ commit }, taskId) {
     commit('DELETE_TASK', taskId);
   },
-  update_global_time({ commit }) {
-    setInterval(() => {
-      commit('UPDATE_GLOBAL_TIME')
-    }, 1000)
-  }
 };
 
 export default {
