@@ -9,7 +9,7 @@
 <script>
 import Alert from './components/Alert'
 import Navbar from './components/Navbar'
-import {mapState} from 'vuex'
+import { mapState } from 'vuex'
 
 
 export default {
@@ -20,6 +20,11 @@ export default {
   },
   created(){
     document.title = 'Scratchy'
+
+    // Start and continuously update global time
+    this.$store.dispatch('global_time').then((timer) => {
+      this.globalTimer = timer
+    })
 
     // start state of app when created with that of localStorage
     var state = JSON.parse(localStorage.getItem('state'))
@@ -54,8 +59,9 @@ export default {
         })
       });
     }), 10000)
-    
-
+  },
+  beforeDestroy() {
+    clearInterval(this.globalTimer)
   },
   computed: {
     ...mapState({

@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import moment from 'moment';
 import timer from './timer'
 import helperFunctions from './helperFunctions'
 import regularTasks from './regularTasks';
@@ -20,6 +21,7 @@ const store = new Vuex.Store({
     }],
     alerts:[],
     usedStorage: 0,
+    now: moment(),
   },
   mutations:{
     UPDATE_REMINDER({columns}, {columnid, noteid, reminderid}){
@@ -128,7 +130,10 @@ const store = new Vuex.Store({
     },
     UPDATE_STORAGE_USED(store, newValue){
       store.usedStorage = newValue
-    }
+    },
+    UPDATE_GLOBAL_TIME(state) {
+      state.now = moment();
+    },
   },
   actions:{
     update_reminder({commit}, {columnid, noteid, reminderid}){
@@ -203,16 +208,23 @@ const store = new Vuex.Store({
         _lsTotal += _xLen
       }
       commit('UPDATE_STORAGE_USED', (_lsTotal/1024).toFixed(2))
-    }
+    },
+    global_time({ commit }) {
+      return setInterval(() => {
+        commit('UPDATE_GLOBAL_TIME')
+      }, 1000)
+    },
   },
   getters:{
+    now: state => state.now,
+
     all_todos_not_done_count({columns}){
       var total = 0
       columns.forEach((col)=>{
         total += col.notes.filter((todo)=>todo.done === false).length
       })
       return total
-    }
+    },
   }
 })
 

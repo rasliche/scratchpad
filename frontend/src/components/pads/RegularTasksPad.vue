@@ -47,7 +47,6 @@ export default {
   methods: {
     ...mapActions('regularTasks', [
       'add_task',
-      'update_global_time',
     ]),
     addTask() {
       // Remove white spaces and extract hrs:min
@@ -75,9 +74,6 @@ export default {
       this.taskName = '';
     },
   },
-  created() {
-    this.update_global_time();
-  }
 }
 </script>
 
