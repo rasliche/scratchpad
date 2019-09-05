@@ -8,38 +8,28 @@
         <font-awesome-icon icon="clock"/> {{notealert.time}}
       </span>
     </p>
-
     <p v-if="!edit" class="text-left mt-5 mb-3 mr-5 pr-5">{{ dnote.text }}</p>
     <p v-else>
       <input @keyup.enter="save_edit" v-model="new_text" type="text" class="form-control border-warning mt-3 mb-3 mr-5">
     </p>
-    
+    <p>
+      <input @keyup.enter="save_reminder" v-if="setting_reminder" v-model="reminder_input" type="text" placeholder=" hh:mm (Enter to save)">
+    </p>
     <div class="text-left">
       <span class="mr-3">
         <a href="javascript:void(0)" class="text-success" @click="toggle_done"><font-awesome-icon icon="check"/> {{ dnote.done ? 'Undo' : 'Done' }}</a>
       </span>
-      <div v-if="show_settings" class="d-inline">
-        <span class="mr-3">
-          <a v-if="!edit" href="javascript:void(0)" class="text-info" @click="toggle_edit"><font-awesome-icon icon="pen"/> Edit</a>
-          <a v-else href="javascript:void(0)" class="text-info" @click="save_edit"><font-awesome-icon icon="pen"/> Save</a>
-        </span>
-        <span class="mr-3">
-          <a href="javascript:void(0)" class="text-info" @click="set_reminder"><font-awesome-icon icon="clock"/> Remind me</a>
-          <input @keyup.enter="save_reminder" v-if="setting_reminder" v-model="reminder_input" type="text" placeholder=" hh:mm (Enter to save)">
-        </span>
-        <span class="mr-3">
-          <select @change="move_note_across">
-            <option>Move to ...</option>
-            <option v-for="col in columns" :key="col.id" :value="col.id">{{ col.title }}</option>
-          </select>
-        </span>
-        <span class="mr-3">
-          <a href="javascript:void(0)" class="text-danger" @click="delete_note"><font-awesome-icon icon="trash"/> Delete</a>
-        </span>
-      </div>
-      <span>
-        <a @click="toggle_settings" href="javascript:void(0)" class="text-muted">{{ show_settings ? 'Cancel' : 'More'}}</a>
-      </span>
+      <b-dropdown size="sm" text="More" variant="outline-secondary" class="m-2">
+        <b-dropdown-item-button v-if="!edit" @click="toggle_edit"><font-awesome-icon icon="pen" class="text-info mr-3"/>Edit</b-dropdown-item-button>
+        <b-dropdown-item-button v-else @click="save_edit"><font-awesome-icon icon="save" class="text-info mr-3"/>Save</b-dropdown-item-button>
+        <b-dropdown-item-button @click="set_reminder"><font-awesome-icon icon="clock" class="text-info mr-3"/>Remind me</b-dropdown-item-button>
+        <select @change="move_note_across" class="custom-select custom-select-sm">
+          <option>Move to ...</option>
+          <option v-for="col in columns" :key="col.id" :value="col.id">{{ col.title }}</option>
+        </select>
+        <b-dropdown-divider></b-dropdown-divider>
+        <b-dropdown-item-button @click="delete_note"><font-awesome-icon icon="trash" class="text-danger mr-3"/>Delete</b-dropdown-item-button>
+      </b-dropdown>
     </div>
   </div>
 </template>
@@ -53,7 +43,6 @@ export default {
     return{
       new_text: this.note.text,
       edit:false,
-      show_settings: false,
       dnote: this.note, // props are not reactive. To ensure reactivity remains, they must be used as local data properties.
       reminder_input: '',
       setting_reminder: false,
@@ -106,7 +95,6 @@ export default {
     },
     toggle_settings(){
       // "cancel" action
-      this.show_settings = !this.show_settings
       this.setting_reminder = false
       this.edit = false
     },
