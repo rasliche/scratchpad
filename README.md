@@ -3,7 +3,7 @@
 </p>
 <p  align="center">
      <a href="https://app.netlify.com/sites/gallant-aryabhata-4161b7/deploys">
-        <img src="https://api.netlify.com/api/v1/badges/0dfd3c21-778c-4385-bd62-1715f4f53817/deploy-status" />
+        <img src="https://api.netlify.com/api/v1/badges/0dfd3c21-778c-4385-bd62-1715f4f53817/deploy-status"/>
     </a>
   </p>
 <p align="center">
@@ -21,51 +21,50 @@
     </a>
 </p>
 
-This is a very simple project I started to help me with work related time keeping. 
-There is no backend required for the application as it uses the localStorage to keep track of data.
+This is a very simple micro-project I started to help me with work related time keeping and general productivity. 
+If, like me, you need to keep track of how long you take working on certain tasks, then this tool may help you.
 
 <p align="center">
-  <img height="400" src="https://github.com/j-000/scratchpad/blob/master/frontend/src/assets/images/github/headerimage3.png">
+  <img height="600" src="https://github.com/j-000/scratchpad/blob/master/frontend/src/assets/images/github/headerimage3.png">
 </p>
 
+## You can try it out
+[Scratchy Online](https://gallant-aryabhata-4161b7.netlify.com/)
+:smile: No questions asked!
+
+
 ## Colaborators so far (3)
+:raised_hands: Big thank you to
+
 [@rasliche](https://github.com/rasliche) [@crispinkoech](https://github.com/crispinkoech) [@nimitbhargava](https://github.com/nimitbhargava)
-
-
-This applications targets work productivity. If you're like me and need to keep track of how long you take
-working on certain tasks, then this tool may help you. 
+ 
+ for your time, dedication, ideas and overall contribution to this micro-project. :sunglasses:
 
 ## Current features:
 - :notebook_with_decorative_cover: Note entry and management.
+- :bell: Reminders
 - :timer_clock: Time entry with short note.
-- :file_folder: Everything is local! Your data stays on your browser (localStorage).
+- :file_folder: Everything is local. Your data stays on your browser (local storage).
 
-
-## Tech used:
+## Tech used
 - [VueJS](https://vuejs.org/) - single page applications made easy.
 - [Vuex](https://vuex.vuejs.org/) - for easy state management.
+- [Netlify](https://www.netlify.com/) - for headache-free, automatic deployments.
 - [Bootstrap](https://getbootstrap.com/) for people that are terrible with CSS (like me).
 
 
-## You can try it out here:
-[Scratchy Online](https://elasticbeanstalk-eu-west-2-688580042881.s3.eu-west-2.amazonaws.com/index.html)
-
-
 ## What to get involved?
+:arrow_right: Read [CONTRIBUTING.md](https://github.com/j-000/scratchpad/blob/master/CONTRIBUTING.md)
 
 ### Project setup
 ```
 git clone https://github.com/j-000/scratchpad.git
-git branch "yourusername"
-git checkout "yourusername"
 npm install
 npm run serve
 ```
-Now do some coding. Master branch is protected from force pull requests. You need to create a new branch first (call it anything).
+Now do some coding. Master branch is protected from force pull requests. You need to create a new branch to commit your code. You may call this branch anything you like. For more info, checkout [CONTRIBUTING.md](https://github.com/j-000/scratchpad/blob/master/CONTRIBUTING.md).
 
-:arrow_right: Read [CONTRIBUTING.md](https://github.com/j-000/scratchpad/blob/master/CONTRIBUTING.md)
-
-Feel free to make some suggestions, add new features and whatnot.
+:grey_question: Feel free to [raise an issue](https://github.com/j-000/scratchpad/issues/new) if you're in doubt.
 
 ### Ideas for improvement:
 - [x] - Add a logo
