@@ -1,11 +1,23 @@
 # Scratchy
 [Try it online](https://elasticbeanstalk-eu-west-2-688580042881.s3.eu-west-2.amazonaws.com/index.html)
 
+<p align="center">
+    <a href="https://github.com/j-000/scratchpad/blob/master/LICENSE">
+      <img src="https://img.shields.io/apm/l/vim-mode?color=blue&style=flat-square" />
+    </a>
+    <a href="https://discord.gg/XJtj76">
+      <img src="https://img.shields.io/discord/617668577972977675?style=flat-square" />
+    </a>
+    <a href="https://github.com/SeleniumHQ/selenium">
+      <img src="https://img.shields.io/badge/built%20with-VueJS-green.svg?style=flat-square" />
+    </a>
+</p>
+
 This is a very simple project I started to help me with work related time keeping. 
 There is no backend required for the application as it uses the localStorage to keep track of data.
 
 <p align="center">
-    <img height="400" src="https://github.com/j-000/scratchpad/blob/master/frontend/src/assets/images/github/headerimage2.png">
+  <img height="400" src="https://github.com/j-000/scratchpad/blob/master/frontend/src/assets/images/github/headerimage2.png">
 </p>
 
 ## Colaborators so far (3)
