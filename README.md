@@ -42,9 +42,10 @@ If, like me, you need to keep track of how long you take working on certain task
 
 ## Current features:
 - :notebook_with_decorative_cover: Note entry and management.
-- :bell: Reminders
+- :bell: Reminders.
 - :timer_clock: Time entry with short note.
-- :file_folder: Everything is local. Your data stays on your browser (local storage).
+- :file_folder: Everything is local. Your data stays on your browser (local storage) and you can easily download it.
+- :arrow_upper_right: Drag notes to column tabs to move them.
 
 ## Tech used
 - [VueJS](https://vuejs.org/) - single page applications made easy.
@@ -74,6 +75,7 @@ Now do some coding. Master branch is protected from force pull requests. You nee
 - [x] - Regular Tasks
 - [x] - Move todos to different tabs
 - [x] - Add alert functionaity to the todos
+- [x] - Drag and drop notes to move them between tabs
 - [ ] - Leverage 3rd party APIs for alerts (like twilio, SMTP or browser notifications API)
 - [ ] - Add settings for customisation of alerts
 - [ ] - Improved UI - maybe allow customisation
