@@ -24,9 +24,7 @@
 This is a very simple micro-project I started to help me with work related time keeping and general productivity. 
 If, like me, you need to keep track of how long you take working on certain tasks, then this tool may help you.
 
-<p align="center">
-  <img height="600" src="https://github.com/j-000/scratchpad/blob/master/frontend/src/assets/images/github/headerimage3.png">
-</p>
+![](https://github.com/j-000/scratchpad/blob/master/frontend/src/assets/gifs/intro.gif)
 
 ## You can try it out
 [Scratchy Online](https://gallant-aryabhata-4161b7.netlify.com/)
