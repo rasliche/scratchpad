@@ -1,6 +1,11 @@
 <p align="center">
     <img src="https://github.com/j-000/scratchpad/blob/master/frontend/src/assets/images/logo1.png" />
 </p>
+<p  align="center">
+     <a href="https://app.netlify.com/sites/gallant-aryabhata-4161b7/deploys">
+        <img src="https://api.netlify.com/api/v1/badges/0dfd3c21-778c-4385-bd62-1715f4f53817/deploy-status" />
+    </a>
+  </p>
 <p align="center">
     <a href="https://elasticbeanstalk-eu-west-2-688580042881.s3.eu-west-2.amazonaws.com/index.html">
       <img src="https://img.shields.io/badge/Try%20it!-online-orange?style=flat-square" />
