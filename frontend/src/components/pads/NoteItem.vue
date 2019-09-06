@@ -1,5 +1,5 @@
 <template>
-  <div class="list-group-item mb-2">
+  <div class="list-group-item mb-2" draggable @dragstart="pickupnote($event, dnote.id, columnid)">
     <small class="spt font-italic">{{ dnote.created | toHumanDate }}</small>
     <small :class="dnote.done ? 'pts badge badge-success' : 'pts badge badge-warning'">{{ dnote.done ? 'Done' : '' }}</small>
     <small class="pts2"><span v-if="error_message" class="text-danger error-message">{{error_message}}</span> #{{ dnote.id }}</small>
@@ -23,10 +23,6 @@
         <b-dropdown-item-button v-if="!edit" @click="toggle_edit"><font-awesome-icon icon="pen" class="text-info mr-3"/>Edit</b-dropdown-item-button>
         <b-dropdown-item-button v-else @click="save_edit"><font-awesome-icon icon="save" class="text-info mr-3"/>Save</b-dropdown-item-button>
         <b-dropdown-item-button @click="set_reminder"><font-awesome-icon icon="clock" class="text-info mr-3"/>Remind me</b-dropdown-item-button>
-        <select @change="move_note_across" class="custom-select custom-select-sm">
-          <option>Move to ...</option>
-          <option v-for="col in columns" :key="col.id" :value="col.id">{{ col.title }}</option>
-        </select>
         <b-dropdown-divider></b-dropdown-divider>
         <b-dropdown-item-button @click="delete_note"><font-awesome-icon icon="trash" class="text-danger mr-3"/>Delete</b-dropdown-item-button>
       </b-dropdown>
@@ -65,11 +61,15 @@ export default {
     }
   },
   methods:{
-    move_note_across(e){
-      var fromColId = parseInt(this.columnid)
-      var toColId = parseInt(e.target.value)
-      var noteid = this.dnote.id      
-      this.$store.dispatch('move_note', {fromColId, toColId, noteid})
+    pickupnote(e, noteId, columnid){
+      // eslint-disable-next-line
+      console.log(`Dragging note #${noteId} from column ${columnid}`);
+      e.dataTransfer.effectAllowed = "move"
+      e.dataTransfer.dropEffect = "move"
+
+      e.dataTransfer.setData('noteId', noteId)
+      e.dataTransfer.setData('columnid', columnid)
+      
     },
     save_reminder(){
       if(this.reminder_input.match(/^\d\d:\d\d$/gsi) && this.reminder_input.match(/^[0-2][0-9]:[0-5][0-9]$/)){
