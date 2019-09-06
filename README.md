@@ -7,7 +7,7 @@
     </a>
   </p>
 <p align="center">
-    <a href="https://elasticbeanstalk-eu-west-2-688580042881.s3.eu-west-2.amazonaws.com/index.html">
+    <a href="https://gallant-aryabhata-4161b7.netlify.com/">
       <img src="https://img.shields.io/badge/Try%20it!-online-orange?style=flat-square" />
     </a>
     <a href="https://github.com/j-000/scratchpad/blob/master/LICENSE">
@@ -72,9 +72,9 @@ Feel free to make some suggestions, add new features and whatnot.
 - [x] - Add more tabs/columns
 - [x] - Time keeping
 - [x] - Note Alerts
-- [ ] - Regular Tasks
-- [ ] - Move todos to different tabs
-- [ ] - Add alert functionaity to the todos
+- [x] - Regular Tasks
+- [x] - Move todos to different tabs
+- [x] - Add alert functionaity to the todos
 - [ ] - Leverage 3rd party APIs for alerts (like twilio, SMTP or browser notifications API)
 - [ ] - Add settings for customisation of alerts
 - [ ] - Improved UI - maybe allow customisation
