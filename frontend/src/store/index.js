@@ -230,7 +230,7 @@ const store = new Vuex.Store({
     global_time({ commit }) {
       return setInterval(() => {
         commit('UPDATE_GLOBAL_TIME')
-      }, 1000)
+      }, 60000)
     },
   },
   getters:{
