@@ -3,7 +3,7 @@
     <h1 class="mb-4">Settings</h1>
     <div class="mt-4">
       <h4>Data</h4>
-      <a @click="download_data" href="javascript:void(0)">Export data (.txt)</a>
+      <a @click="download_data" href="javascript:void(0)">Export data (.json)</a>
     </div>
     <div class="mt-4">
       <h4>Delete columns</h4>
