@@ -25,7 +25,7 @@ This is a very simple project I started to help me with work related time keepin
 There is no backend required for the application as it uses the localStorage to keep track of data.
 
 <p align="center">
-  <img height="400" src="https://github.com/j-000/scratchpad/blob/master/frontend/src/assets/images/github/headerimage2.png">
+  <img height="400" src="https://github.com/j-000/scratchpad/blob/master/frontend/src/assets/images/github/headerimage3.png">
 </p>
 
 ## Colaborators so far (3)
