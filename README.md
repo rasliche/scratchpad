@@ -1,7 +1,8 @@
 # Scratchy
-[Try it online](https://elasticbeanstalk-eu-west-2-688580042881.s3.eu-west-2.amazonaws.com/index.html)
-
 <p align="center">
+    <a href="https://elasticbeanstalk-eu-west-2-688580042881.s3.eu-west-2.amazonaws.com/index.html">
+      <img src="https://img.shields.io/badge/Try%20it!-online-orange?style=flat-square" />
+    </a>
     <a href="https://github.com/j-000/scratchpad/blob/master/LICENSE">
       <img src="https://img.shields.io/apm/l/vim-mode?color=blue&style=flat-square" />
     </a>
