@@ -1,5 +1,8 @@
 function next_column_id (state) {
-  return state.columns[ state.columns.length - 1 ].id + 1 || 1
+  if(state.columns.length > 0){
+    return state.columns[ state.columns.length - 1 ].id + 1
+  }
+  return 1
 }
 
 function next_note_id(state, columnid){
