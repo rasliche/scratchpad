@@ -1,14 +1,14 @@
 <template>
-  <div class="list-group-item mb-2" draggable @dragstart="pickupnote($event, dnote.id, columnid)">
-    <small class="spt font-italic">{{ dnote.created | toHumanDate }}</small>
-    <small :class="dnote.done ? 'pts badge badge-success' : 'pts badge badge-warning'">{{ dnote.done ? 'Done' : '' }}</small>
-    <small class="pts2"><span v-if="error_message" class="text-danger error-message">{{error_message}}</span> #{{ dnote.id }}</small>
+  <div class="list-group-item mb-2" draggable @dragstart="pickuptask($event, task.id, columnid)">
+    <small class="spt font-italic">{{ task.created | toHumanDate }}</small>
+    <small :class="task.done ? 'pts badge badge-success' : 'pts badge badge-warning'">{{ task.done ? 'Done' : '' }}</small>
+    <small class="pts2"><span v-if="error_message" class="text-danger error-message">{{error_message}}</span> #{{ task.id }}</small>
     <p class="pts3">
-      <span v-for="notealert in notealerts" :key="notealert.time" class="badge badge-warning mr-2">
-        <font-awesome-icon icon="clock"/> {{notealert.time}}
+      <span v-for="alert in taskalerts" :key="alert.time" class="badge badge-warning mr-2">
+        <font-awesome-icon icon="clock"/> {{alert.time}}
       </span>
     </p>
-    <p v-if="!edit" class="text-left mt-5 mb-3 mr-5 pr-5">{{ dnote.text }}</p>
+    <p v-if="!edit" class="text-left mt-5 mb-3 mr-5 pr-5">{{ task.text }}</p>
     <p v-else>
       <input @keyup.enter="save_edit" v-model="new_text" type="text" class="form-control border-warning mt-3 mb-3 mr-5">
     </p>
@@ -17,14 +17,14 @@
     </p>
     <div class="text-left">
       <span class="mr-3">
-        <a href="javascript:void(0)" class="text-success" @click="toggle_done"><font-awesome-icon icon="check"/> {{ dnote.done ? 'Undo' : 'Done' }}</a>
+        <a href="javascript:void(0)" class="text-success" @click="toggle_done"><font-awesome-icon icon="check"/> {{ task.done ? 'Undo' : 'Done' }}</a>
       </span>
       <b-dropdown size="sm" text="More" variant="outline-secondary" class="m-2">
         <b-dropdown-item-button v-if="!edit" @click="toggle_edit"><font-awesome-icon icon="pen" class="text-info mr-3"/>Edit</b-dropdown-item-button>
         <b-dropdown-item-button v-else @click="save_edit"><font-awesome-icon icon="save" class="text-info mr-3"/>Save</b-dropdown-item-button>
         <b-dropdown-item-button @click="set_reminder"><font-awesome-icon icon="clock" class="text-info mr-3"/>Remind me</b-dropdown-item-button>
         <b-dropdown-divider></b-dropdown-divider>
-        <b-dropdown-item-button @click="delete_note"><font-awesome-icon icon="trash" class="text-danger mr-3"/>Delete</b-dropdown-item-button>
+        <b-dropdown-item-button @click="delete_task"><font-awesome-icon icon="trash" class="text-danger mr-3"/>Delete</b-dropdown-item-button>
       </b-dropdown>
     </div>
   </div>
@@ -34,12 +34,12 @@
 import moment from 'moment'
 import {mapState} from 'vuex'
 export default {
-  name: 'NoteItem',
+  name: 'TaskItem',
   data(){
     return{
       new_text: this.note.text,
       edit:false,
-      dnote: this.note, // props are not reactive. To ensure reactivity remains, they must be used as local data properties.
+      task: this.note, // props are not reactive. To ensure reactivity remains, they must be used as local data properties.
       reminder_input: '',
       setting_reminder: false,
       error_message: ''
@@ -61,19 +61,15 @@ export default {
     }
   },
   methods:{
-    pickupnote(e, noteId, columnid){
-      // eslint-disable-next-line
-      console.log(`Dragging note #${noteId} from column ${columnid}`);
+    pickuptask(e, taskid, columnid){
       e.dataTransfer.effectAllowed = "move"
       e.dataTransfer.dropEffect = "move"
-
-      e.dataTransfer.setData('noteId', noteId)
+      e.dataTransfer.setData('taskid', taskid)
       e.dataTransfer.setData('columnid', columnid)
-      
     },
     save_reminder(){
       if(this.reminder_input.match(/^\d\d:\d\d$/gsi) && this.reminder_input.match(/^[0-2][0-9]:[0-5][0-9]$/)){
-        this.$store.dispatch('add_reminder', {columnid: this.columnid, noteid: this.dnote.id, time: this.reminder_input})
+        this.$store.dispatch('add_reminder', {columnid: this.columnid, taskid: this.task.id, time: this.reminder_input})
         this.reminder_input = ''
         this.toggle_settings()
       }else{
@@ -87,7 +83,7 @@ export default {
       this.setting_reminder = !this.setting_reminder
     },
     save_edit(){
-      this.$store.dispatch('update_note', {columnid: this.columnid, noteid: this.dnote.id, text: this.new_text})
+      this.$store.dispatch('update_task', {columnid: this.columnid, taskid: this.task.id, text: this.new_text})
       this.toggle_settings()
     },
     toggle_edit(){
@@ -99,19 +95,19 @@ export default {
       this.edit = false
     },
     toggle_done(){
-      this.$store.dispatch('toggle_done', {columnid: this.columnid, noteid: this.dnote.id})
+      this.$store.dispatch('toggle_done', {columnid: this.columnid, taskid: this.task.id})
     },
-    delete_note(){
-      if(confirm('Delete note?')){
-        this.$store.dispatch('delete_note', {columnid: this.columnid, noteid: this.dnote.id})
+    delete_task(){
+      if(confirm('Delete task?')){
+        this.$store.dispatch('delete_task', {columnid: this.columnid, taskid: this.task.id})
       }
     }
   },
   computed:{
     ...mapState(['columns']),
-    notealerts(){
+    taskalerts(){
       // filter reminders that have not been raised     
-      return this.dnote.alerts.filter((alert) => alert.completed === false)
+      return this.task.alerts.filter((alert) => alert.completed === false)
     }
   }
 }

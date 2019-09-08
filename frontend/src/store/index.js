@@ -17,74 +17,75 @@ const store = new Vuex.Store({
     columns:[{
       id:1,
       title: 'Things to do',
-      notes: []
+      tasks: []
     }],
     alerts:[],
     usedStorage: 0,
     now: moment(),
   },
   mutations:{
-    MOVE_NOTE({columns}, {fromColId, toColId, noteid}){
+    MOVE_TASK({columns}, {fromColId, toColId, taskid}){
       // get fromCol and toCol objects
-      var fromCol = columns.filter(col => col.id === fromColId)[0]
-      var toCol = columns.filter(col => col.id === toColId)[0]
+      var fromCol = columns.find(col => col.id === fromColId)
+      var toCol = columns.find(col => col.id === toColId)
       if(fromCol && toCol){
-        // get the note object
-        var note = fromCol.notes.filter(n => n.id === noteid)[0]
-        if(note){
-          // push note to toCol
-          toCol.notes.push(note)
-          // delete note from fromCol
-          fromCol.notes.splice(fromCol.notes.indexOf(note), 1)
+        // get the task object
+        var task = fromCol.tasks.find(t => t.id === taskid)
+        if(task){
+          // push task to toCol
+          toCol.tasks.push(task)
+          // delete task from fromCol
+          fromCol.tasks.splice(fromCol.tasks.indexOf(task), 1)
         }
       }
     },
-    UPDATE_REMINDER({columns}, {columnid, noteid, reminderid}){
-      var column = columns.filter((col) => col.id === columnid)[0]
+    UPDATE_REMINDER({columns}, {columnid, taskid, reminderid}){
+      // sets completed to true as it has alerted the user
+      var column = columns.find((col) => col.id === columnid)
       if(column){
-        var note = column.notes.filter((n) => n.id === noteid)[0]
-        if(note){
-          var reminder = note.alerts.filter((rem) => rem.id === reminderid)[0]
+        var task = column.tasks.find((t) => t.id === taskid)
+        if(task){
+          var reminder = task.alerts.find((rem) => rem.id === reminderid)
           if(reminder){
             reminder.completed = true
           }
         }
       }
     },
-    ADD_REMINDER({columns}, {columnid, noteid, alertobj}){
-      var col = columns.filter((c)=> c.id === columnid)[0]
+    ADD_REMINDER({columns}, {columnid, taskid, alertobj}){
+      var col = columns.find((c)=> c.id === columnid)
       if(col){
-        var note = col.notes.filter((n) => n.id === noteid)[0]
-        if(note){
-          if(note.alerts){
-            note.alerts.push(alertobj)
+        var task = col.tasks.find((n) => n.id === taskid)
+        if(task){
+          if(task.alerts){
+            task.alerts.push(alertobj)
           }else{
-            note['alerts'] = []
-            note.alerts.push(alertobj)
+            task['alerts'] = []
+            task.alerts.push(alertobj)
           }
         }
       }
     },
-    DELETE_REMINDER({columns}, {columnid, noteid, reminderid}){
-      var col = columns.filter((c) => c.id === columnid)[0]
+    DELETE_REMINDER({columns}, {columnid, taskid, reminderid}){
+      var col = columns.find((c) => c.id === columnid)
       if (col){
-        var note = col.notes.filter((note) => note.id === noteid)[0]
-        if(note){
-          var reminder = note.alerts.filter((rem) => rem.id === reminderid)[0]
+        var task = col.tasks.find((t) => t.id === taskid)
+        if(task){
+          var reminder = task.alerts.find((rem) => rem.id === reminderid)
           if(reminder){
-            note.alerts.splice(note.alerts.indexOf(reminder), 1)
+            task.alerts.splice(task.alerts.indexOf(reminder), 1)
           }
         }
       }
     },
     DELETE_COLUMN({columns}, {columnid}){
-      var col = columns.filter((c)=>c.id === columnid)[0]
+      var col = columns.find((c)=>c.id === columnid)
       if(col){
         columns.splice(columns.indexOf(col), 1)
       }
     },
     SAVE_NEW_TITLE({columns}, {columnid, newtitle}){
-      var col = columns.filter((c)=>c.id === columnid)[0]
+      var col = columns.find((c)=>c.id === columnid)
       if(col){
         col.title = newtitle
       }
@@ -100,37 +101,38 @@ const store = new Vuex.Store({
       if (newstate.timer) state.timer = newstate.timer
       if (newstate.regularTasks) state.regularTasks = newstate.regularTasks  
     },
-    ADD_NOTE({columns}, {columnid, note}){
-      var column = columns.filter((col) => col.id === columnid)[0]
+    ADD_TASK({columns}, {columnid, task}){
+      var column = columns.find((col) => col.id === columnid)
       if (column) {
-        column.notes.push(note)
+        column.tasks.push(task)
       }
     },
-    UPDATE_NOTE({columns}, {columnid, noteid, text}){
-      var col = columns.filter((c) => c.id === columnid)[0]
+    UPDATE_TASK({columns}, {columnid, taskid, text}){
+      var col = columns.find((c) => c.id === columnid)
       if(col){
-        var note = col.notes.filter((n) => n.id === noteid)[0]
-        if(note){
-          note.text = text
+        var task = col.tasks.find((n) => n.id === taskid)
+        if(task){
+          task.text = text
         }
       }
     },
-    TOGGLE_DONE({columns}, {columnid, noteid}){
-      var col = columns.filter((c) => c.id === columnid)[0]
+    TOGGLE_DONE({columns}, {columnid, taskid}){
+      var col = columns.find((c) => c.id === columnid)
       if(col){
-        var note = col.notes.filter((n) => n.id === noteid)[0]
-        if(note){
-          note.done = !note.done
+        var task = col.tasks.find((n) => n.id === taskid)
+        if(task){
+          task.done = !task.done
+          task.due = !task.due
         }
       }
     },
-    DELETE_NOTE({columns}, {columnid, noteid}){
-      var col = columns.filter((c) => c.id === columnid)[0]
+    DELETE_TASK({columns}, {columnid, taskid}){
+      var col = columns.find((c) => c.id === columnid)
       if(col){
-        var note = col.notes.filter((n) => n.id === noteid)[0]
-        if(note){
-          var index = col.notes.indexOf(note)
-          col.notes.splice(index, 1)
+        var task = col.tasks.find((n) => n.id === taskid)
+        if(task){
+          var index = col.tasks.indexOf(task)
+          col.tasks.splice(index, 1)
         }
       }
     },
@@ -138,9 +140,9 @@ const store = new Vuex.Store({
       alerts.push(alert)
     },
     REMOVE_ALERT({alerts}, alertobj){
-      var a = alerts.filter((alert) => alert.id === alertobj.id)[0]
-      if(a){
-        alerts.splice(alerts.indexOf(a), 1)
+      var alert = alerts.filter((a) => a.id === alertobj.id)[0]
+      if(alert){
+        alerts.splice(alerts.indexOf(alert), 1)
       }
     },
     UPDATE_STORAGE_USED(store, newValue){
@@ -151,22 +153,22 @@ const store = new Vuex.Store({
     },
   },
   actions:{
-    move_note({commit}, {fromColId, toColId, noteid}){
-      commit('MOVE_NOTE', {fromColId, toColId, noteid})
+    move_task({commit}, {fromColId, toColId, taskid}){
+      commit('MOVE_TASK', {fromColId, toColId, taskid})
     },
-    update_reminder({commit}, {columnid, noteid, reminderid}){
-      commit('UPDATE_REMINDER', {columnid, noteid, reminderid})
+    update_reminder({commit}, {columnid, taskid, reminderid}){
+      commit('UPDATE_REMINDER', {columnid, taskid, reminderid})
     },
-    add_reminder({commit, state}, {columnid, noteid, time}){     
+    add_reminder({commit, state}, {columnid, taskid, time}){     
       var alertobj = {
-        id: helperFunctions.next_reminder_id(state, columnid, noteid),
+        id: helperFunctions.next_reminder_id(state, columnid, taskid),
         time,
         completed: false
       }
-      commit('ADD_REMINDER', {columnid, noteid, alertobj})
+      commit('ADD_REMINDER', {columnid, taskid, alertobj})
     },
-    delete_note_alerts({commit}, {columnid, noteid, reminderid}){
-      commit('DELETE_REMINDER', {columnid, noteid, reminderid})
+    delete_task_reminder({commit}, {columnid, taskid, reminderid}){
+      commit('DELETE_REMINDER', {columnid, taskid, reminderid})
     },
     delete_column({commit}, {columnid}){
       commit('DELETE_COLUMN', {columnid})
@@ -176,7 +178,7 @@ const store = new Vuex.Store({
       var newcolobj = {
         id: nextid,
         title,
-        notes:[]
+        tasks: []
       }
       commit('ADD_NEW_COLUMN', newcolobj)
     },
@@ -186,24 +188,27 @@ const store = new Vuex.Store({
     update_active_tab({commit}, columnid){
       commit('UPDATE_ACTIVE_TAB', columnid)
     },
-    add_note({commit, state}, {columnid, text}){
-      var note = {
-        id: helperFunctions.next_note_id(state, columnid),
+    add_task({commit, state}, {columnid, text}){
+      var task = {
+        id: helperFunctions.next_task_id(state),
         text,
         done: false,
         alerts: [],
+        due: true,
+        columnid,
+        dueDate: new Date().toDateString(),
         created: new Date().toUTCString()
       }
-      commit('ADD_NOTE', {columnid, note})
+      commit('ADD_TASK', {columnid, task})
     },
-    update_note({commit}, {columnid, noteid, text}){
-      commit('UPDATE_NOTE', {columnid, noteid, text})
+    update_task({commit}, {columnid, taskid, text}){
+      commit('UPDATE_TASK', {columnid, taskid, text})
     },
-    toggle_done({commit}, {columnid, noteid}){
-      commit('TOGGLE_DONE', {columnid, noteid})
+    toggle_done({commit}, {columnid, taskid}){
+      commit('TOGGLE_DONE', {columnid, taskid})
     },
-    delete_note({commit}, {columnid, noteid}){
-      commit('DELETE_NOTE', {columnid, noteid})
+    delete_task({commit}, {columnid, taskid}){
+      commit('DELETE_TASK', {columnid, taskid})
     },
     add_alert({commit}, {message, error}){
       if(!error){error = false}
@@ -235,14 +240,13 @@ const store = new Vuex.Store({
   },
   getters:{
     now: state => state.now,
-
-    all_todos_not_done_count({columns}){
+    all_tasks_not_done_count({columns}){
       var total = 0
       columns.forEach((col)=>{
-        total += col.notes.filter((todo)=>todo.done === false).length
+        total += col.tasks.filter((todo)=>todo.done === false).length
       })
       return total
-    },
+    }
   }
 })
 

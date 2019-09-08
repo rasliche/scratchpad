@@ -5,24 +5,23 @@ function next_column_id (state) {
   return 1
 }
 
-function next_note_id(state, columnid){
-  var nextid;
-  var colnotes = state.columns.filter((col) => col.id === columnid)[0].notes  
-  if(colnotes.length > 0){
-    nextid = colnotes[ colnotes.length - 1 ].id + 1
-  }else{
-    nextid = 1
-  } 
-  return nextid
+function next_task_id(state){
+  // tasks id need to take into account all tasks in the state.
+  // because when changing columns, ids cannot be equal.
+  var totalTaks = 0
+  state.columns.forEach(col => {
+    totalTaks += col.tasks.length
+  });
+  return totalTaks
 }
 
-function next_reminder_id(state, columnid, noteid){
+function next_reminder_id(state, columnid, taskid){
   var nextid;
-  var colnotes = state.columns.filter((col) => col.id === columnid)[0].notes
-  if(colnotes.length > 0){
-    var note = colnotes.filter((n) => n.id === noteid)[0]
-    if(note && note.alerts.length > 0){
-      nextid = note.alerts[ note.alerts.length - 1 ].id + 1
+  var col = state.columns.find((col) => col.id === columnid)
+  if(col && col.tasks.length > 0){
+    var task = col.tasks.find((t) => t.id === taskid)
+    if(task && task.alerts.length > 0){
+      nextid = task.alerts[ task.alerts.length - 1 ].id + 1
     }else{
       nextid = 1
     }
@@ -35,6 +34,6 @@ function next_reminder_id(state, columnid, noteid){
 
 export default {
   next_column_id,
-  next_note_id,
+  next_task_id,
   next_reminder_id
 }

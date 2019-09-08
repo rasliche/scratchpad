@@ -10,11 +10,13 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
-import { faTrash, faBoxOpen, faCheck, faClock, faPen, faFilter, faCog, faPlus, faHome, faSave } from '@fortawesome/free-solid-svg-icons'
-import { faPlay, faPause, faStop } from '@fortawesome/free-solid-svg-icons'
+import { faTrash, faBoxOpen, faCheck, faClock, faPen, 
+faFilter, faCog, faPlus, faHome, faSave, faColumns, faFlag, faSignInAlt, faSignOutAlt, faCogs, faUserPlus, faMinus } from '@fortawesome/free-solid-svg-icons'
+import { faPlay, faPause, faStop, faTasks } from '@fortawesome/free-solid-svg-icons'
 library.add(faPlay, faPause, faStop, faTrash, faBoxOpen,
-  faCheck, faClock, faPen, faFilter, faCog, faPlus, faHome, faSave)
-
+  faCheck, faClock, faPen, faFilter, faCog, faPlus, faHome,
+  faSave, faTasks, faColumns, faFlag, faSignInAlt, faSignOutAlt, faCogs, 
+  faUserPlus, faMinus)
 
 
 Vue.config.productionTip = false

@@ -1,5 +1,6 @@
 const state = {
   timers: [],
+  timerOn: false
 }
 
 const getters = {
@@ -7,6 +8,9 @@ const getters = {
 }
 
 const mutations = {
+  TOGGLE_TIMER(state){
+    state.timerOn = !state.timerOn
+  },
   ADD_TIMER({timers}, timerobj){
     timers.push(timerobj)
   },
@@ -19,6 +23,9 @@ const mutations = {
 }
 
 const actions = {
+  toggle_timer({commit}){
+    commit('TOGGLE_TIMER')
+  },
   add_timer({commit}, {id, note, timer, created}){
     commit('ADD_TIMER', {id, note, timer, created})
   },

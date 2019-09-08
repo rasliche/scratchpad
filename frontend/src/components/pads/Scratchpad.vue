@@ -3,28 +3,28 @@
     <p class="text-left">
       <span class="mr-2">
         <font-awesome-icon icon="filter" class="mr-2"/>
-          <a href="javascript:void(0)" @click="showallnotes">{{ showall ? 'Hide done' : 'Show all (' + column.notes.length + ')' }} </a>
+          <a href="javascript:void(0)" @click="showalltasks">{{ showall ? 'Hide done' : 'Show all (' + column.tasks.length + ')' }} </a>
       </span>
     </p>
     <div class="list-group scratch pt-2 pb-2">
-      <p class="text-center text-info mt-5 mb-5" v-if="notes_not_done.length == 0 & !showall">¯\_(ツ)_/¯ Nothing here</p>
+      <p class="text-center text-info mt-5 mb-5" v-if="tasks_not_done.length == 0 & !showall">¯\_(ツ)_/¯ Nothing here</p>
       <div v-if="!showall">
-        <NoteItem v-for="note in notes_not_done" :key="note.id" :note="note" :columnid="column.id"/>
+        <TaskItem v-for="task in tasks_not_done" :key="task.id" :note="task" :columnid="column.id"/>
       </div>
       <div v-else>
-        <NoteItem v-for="note in column.notes" :key="note.id" :note="note" :columnid="column.id" />
+        <TaskItem v-for="task in column.tasks" :key="task.id" :note="task" :columnid="column.id" />
       </div>
     </div>
-    <textarea id="todo_text" type="text" placeholder='(Shift+Enter to save)' class="mt-4 mb-3 form-control bg-transparent" 
-    @keyup.shift.enter="add_note($event, column)" rows="6"></textarea>
+    <textarea id="task_text" type="text" placeholder='(Shift+Enter to save)' class="mt-4 mb-3 form-control bg-transparent" 
+    @keyup.shift.enter="add_task($event, column)" rows="6"></textarea>
     <p>
-      <a class="text-white p-2 bg-success" href="javascript:void(0)" @click="add_note(false, column)">Add</a> &nbsp; 
+      <a class="text-white p-2 bg-success" href="javascript:void(0)" @click="add_task(false, column)">Add</a> &nbsp; 
     </p>
   </div>
 </template>
 
 <script>
-import NoteItem from './NoteItem'
+import TaskItem from './TaskItem'
 export default {
   name: 'Scratchpad',
   props:{
@@ -40,24 +40,24 @@ export default {
     }
   },
   components:{
-    NoteItem
+    TaskItem
   },
   methods:{
-    showallnotes(){this.showall = !this.showall},
-    add_note(e, column){
-      var notetext;
+    showalltasks(){this.showall = !this.showall},
+    add_task(e, column){
+      var tasktext;
       if(!e){
-        notetext = document.getElementById('todo_text').value
+        tasktext = document.getElementById('task_text').value
       }else{
-        notetext = e.target.value
+        tasktext = e.target.value
       }
       var columnid = column.id
-      if(notetext != ''){
-        this.$store.dispatch('add_note', {columnid, text: notetext})
+      if(tasktext != ''){
+        this.$store.dispatch('add_task', {columnid, text: tasktext})
         if(e){
           e.target.value = ''
         }else{
-          document.getElementById('todo_text').value = ''
+          document.getElementById('task_text').value = ''
         }
       }else{
         alert('Type something.')
@@ -65,8 +65,8 @@ export default {
     }
   },
   computed: {
-    notes_not_done(){
-      return this.column.notes.filter((note) => note.done == false)
+    tasks_not_done(){
+      return this.column.tasks.filter((task) => task.done === false)
     }
   }
 }
