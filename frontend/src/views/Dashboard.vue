@@ -2,8 +2,8 @@
   <div class="m-auto" style="max-width:35rem;">
     <b-card-group deck class="ml-3 mr-3">
       <b-card header="Do this today">
-        <div v-if="tasks_due_today > 0">
-          <b-card-text v-for="task in tasks_due_today" :key="task.id">
+        <div v-if="tasks_due_today.length > 0">
+          <b-card-text v-for="task in tasks_due_today" :key="task.id" class="text-left">
             <b-form-checkbox @change="confirm_done(task.columnid, task.id)" :value="task.id" :id="`cb-${task.id}`">
               <router-link to="/tasks">{{task.text}}</router-link>
             </b-form-checkbox>          
@@ -45,7 +45,7 @@ export default {
       if(confirm(`Mark task #${taskid} as "done"?`)){
         this.toggle_done({columnid, taskid})
       }else{
-        // prevent checkbox from being checked.
+        // TODO: prevent checkbox from being checked.
       }
     }
   }

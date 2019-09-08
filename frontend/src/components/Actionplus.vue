@@ -6,6 +6,9 @@
         <b-list-group-item @click="add_new_column">
           <font-awesome-icon icon="plus" class="mr-2 text-info"/>New Column
         </b-list-group-item>
+        <b-list-group-item>
+          <font-awesome-icon icon="flag" class="mr-2 text-secondary"/>New Goal
+        </b-list-group-item>
         <b-list-group-item @click="toggle_timer(); toggle_actionplus();">
           <span v-if="timerOn">
             <font-awesome-icon icon="stop" class="mr-2 text-danger"/>Stop timer
@@ -14,9 +17,7 @@
             <font-awesome-icon icon="play" class="mr-2 text-success"/>Start timer
           </span>
         </b-list-group-item>
-        <b-list-group-item>Morbi leo risus</b-list-group-item>
-        <b-list-group-item>Porta ac consectetur ac</b-list-group-item>
-        <b-list-group-item>Vestibulum at eros</b-list-group-item>
+        
       </b-list-group>
     </span>
   </div>
