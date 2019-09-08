@@ -20,7 +20,11 @@
               <font-awesome-icon icon="tasks" class="mr-2"/>Tasks    
             </router-link>
           </b-nav-item>
-          <b-nav-item href="#"><font-awesome-icon icon="flag" class="mr-2"/>Goals</b-nav-item>
+          <b-nav-item href="#">
+            <router-link to="/goals" class="text-white">
+              <font-awesome-icon icon="flag" class="mr-2"/>Goals
+            </router-link>
+          </b-nav-item>
         </b-navbar-nav>
         <b-navbar-nav class="ml-auto">
           

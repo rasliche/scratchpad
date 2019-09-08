@@ -17,7 +17,6 @@
 
 <script>
 /*
-  eslint-disable
   show a checkbox and task description if due today
   if checked then confirmation to mark task done should be prompted
 */

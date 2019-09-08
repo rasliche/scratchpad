@@ -66,6 +66,7 @@ export default {
   cursor: pointer;
 }
 .actionplus{
+  background: white;
   width: 50px;
   height: 50px;
   z-index: 200102;

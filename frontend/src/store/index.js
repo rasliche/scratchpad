@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import moment from 'moment';
 import timer from './timer'
+import goals from './goals'
 import helperFunctions from './helperFunctions'
 import regularTasks from './regularTasks';
 
@@ -11,6 +12,7 @@ const store = new Vuex.Store({
   modules: {
     timer,
     regularTasks,
+    goals
   },
   state:{
     activeTab:'',
@@ -194,6 +196,7 @@ const store = new Vuex.Store({
         text,
         done: false,
         alerts: [],
+        timeEntries:[],
         due: true,
         columnid,
         dueDate: new Date().toDateString(),
