@@ -3,7 +3,7 @@
     <p class="text-left">
       <span class="mr-2">
         <font-awesome-icon icon="filter" class="mr-2"/>
-          <a href="javascript:void(0)" @click="showalltasks">{{ showall ? 'Hide done' : 'Show all (' + column.tasks.length + ')' }} </a>
+        <a href="javascript:void(0)" @click="showall = !showall">{{ showall ? 'Hide done' : 'Show all (' + column.tasks.length + ')' }} </a>
       </span>
     </p>
     <div class="list-group scratch pt-2 pb-2">
@@ -15,17 +15,20 @@
         <TaskItem v-for="task in column.tasks" :key="task.id" :note="task" :columnid="column.id" />
       </div>
     </div>
-    <textarea id="task_text" type="text" placeholder='(Shift+Enter to save)' class="mt-4 mb-3 form-control bg-transparent" 
-    @keyup.shift.enter="add_task($event, column)" rows="6"></textarea>
-    <b-form-input v-model="dueDate" type="date"></b-form-input>
-    <p class="mt-3">
-      <a class="text-white p-2 bg-success" href="javascript:void(0)" @click="add_task(false, column)">Add</a> &nbsp; 
-    </p>
+    <b-form>
+      <b-form-textarea @keyup.shift.enter="addTask" v-model="task.text" placeholder="(Shift+Enter to save)" rows="6" class="mt-3 mb-3"></b-form-textarea>
+      <b-form-input v-model="task.dueDate" type="date"></b-form-input>
+      <p class="mt-3">
+        <a class="text-white p-2 bg-success" href="javascript:void(0)" @click="addTask">Add</a>
+      </p>
+    </b-form>
   </div>
 </template>
 
 <script>
+/*eslint-disable*/
 import TaskItem from './TaskItem'
+import {mapActions} from 'vuex'
 export default {
   name: 'Scratchpad',
   props:{
@@ -36,34 +39,24 @@ export default {
   },
   data(){
     return{
-      dueDate: '',
+      task:{columnid: this.column.id, text:'', dueDate:''},
       filtering: false,
-      showall:false
+      showall:false,
+      error: ''
     }
   },
   components:{
     TaskItem
   },
   methods:{
-    showalltasks(){this.showall = !this.showall},
-    add_task(e, column){
-      var tasktext;
-      if(!e){
-        tasktext = document.getElementById('task_text').value
+    ...mapActions(['add_task']),
+    addTask(){
+      if(this.task.text !== '' && this.task.dueDate !== ''){
+        console.log(this.task)
+        this.add_task(this.task)
+        this.task = {columnid: this.column.id, text:'', dueDate:''}
       }else{
-        tasktext = e.target.value
-      }
-      var columnid = column.id
-      if(tasktext != ''){
-        this.$store.dispatch('add_task', {columnid, text: tasktext, dueDate: this.dueDate})
-        this.dueDate = ''
-        if(e){
-          e.target.value = ''
-        }else{
-          document.getElementById('task_text').value = ''
-        }
-      }else{
-        alert('Type something.')
+        alert('Did yoy forget something? Check your task has a due date and a bit of text.')
       }
     }
   },

@@ -15,7 +15,7 @@ const store = new Vuex.Store({
     goals
   },
   state:{
-    activeTab:'',
+    activeTab:1,
     columns:[{
       id:1,
       title: 'Things to do',

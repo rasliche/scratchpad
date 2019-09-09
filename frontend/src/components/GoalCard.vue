@@ -3,7 +3,7 @@
     bg-variant="default" 
     :header="goal.title" class="text-center goal_card m-3" style="max-width:40rem;">
     <b-card-text>{{goal.description}}</b-card-text>
-    <b-progress :max="100" variant="success" height="1.5rem" animated>
+    <b-progress :max="100" variant="success" height="1.5rem">
       <b-progress-bar :value="percentageComplete" class="font-weight-bold text-dark">{{ percentageComplete }} % completed</b-progress-bar>
     </b-progress>
     <hr>
@@ -34,6 +34,7 @@
           ></b-form-checkbox-group>
         </b-form-group>
       </div>
+      <a @click="removeGoal(goal.id)" href="javascript:void(0)" class="text-danger mr-2">Delete Goal</a>
       <b-button @click="updateGoal" variant="success">Update Goal</b-button>
     </div>
   </b-card>
@@ -69,10 +70,15 @@ export default {
     percentageComplete: function(){return this.get_percentage_completed(this.goal.id) || 0}
   },
   methods:{
-    ...mapActions('goals', ['update_goal_tasks']),
+    ...mapActions('goals', ['update_goal_tasks', 'remove_goal']),
     updateGoal(){
       this.update_goal_tasks({goalId: this.goal.id, newTasksList: this.selectedOptions})
       this.show = false
+    },
+    removeGoal(goalId){
+      if(confirm(`Delete goal "${this.goal.title}" ?`)){
+        this.remove_goal(goalId)
+      }
     }
   },
   created(){

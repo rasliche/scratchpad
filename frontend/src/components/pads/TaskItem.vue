@@ -2,9 +2,9 @@
   <div class="list-group-item mb-2" draggable @dragstart="pickuptask($event, task.id, columnid)">
     <small class="spt font-italic">{{ task.created | toHumanDate }}</small>
     <p>    
-      <span v-for="goal in taskGoals" :key="goal.id" class="badge badge-info mr-2">{{ goal.title }}</span>
-      <span :class="task.done ? 'badge badge-success mr-2' : 'badge badge-warning mr-2'">{{ task.done ? 'Done' : '' }}</span>
       <span class="mr-2"><small v-if="error_message" class="text-danger mr-2 error-message">{{error_message}}</small>#{{ task.id }}</span>
+      <span :class="task.done ? 'badge badge-success mr-2' : 'badge badge-warning mr-2'">{{ task.done ? 'Done' : '' }}</span>
+      <span v-for="goal in taskGoals" :key="goal.id" class="badge badge-success mr-2">{{ goal.title }}</span>
       <span class="badge badge-info">Due {{ task.dueDate | toHumanDate }}</span>
     </p>
     <p class="pts3">
@@ -24,9 +24,9 @@
         <a href="javascript:void(0)" class="text-success" @click="toggle_done"><font-awesome-icon icon="check"/> {{ task.done ? 'Undo' : 'Done' }}</a>
       </span>
       <b-dropdown size="sm" text="More" variant="outline-secondary" class="m-2">
-        <b-dropdown-item-button v-if="!edit" @click="toggle_edit"><font-awesome-icon icon="pen" class="text-info mr-3"/>Edit</b-dropdown-item-button>
+        <b-dropdown-item-button v-if="!edit" @click="edit = !edit"><font-awesome-icon icon="pen" class="text-info mr-3"/>Edit</b-dropdown-item-button>
         <b-dropdown-item-button v-else @click="save_edit"><font-awesome-icon icon="save" class="text-info mr-3"/>Save</b-dropdown-item-button>
-        <b-dropdown-item-button @click="set_reminder"><font-awesome-icon icon="clock" class="text-info mr-3"/>Remind me</b-dropdown-item-button>
+        <b-dropdown-item-button @click="setting_reminder = !setting_reminder"><font-awesome-icon icon="clock" class="text-info mr-3"/>Remind me</b-dropdown-item-button>
         <b-dropdown-divider></b-dropdown-divider>
         <b-dropdown-item-button @click="delete_task"><font-awesome-icon icon="trash" class="text-danger mr-3"/>Delete</b-dropdown-item-button>
       </b-dropdown>
@@ -84,15 +84,9 @@ export default {
         }, 3000)
       }
     },
-    set_reminder(){
-      this.setting_reminder = !this.setting_reminder
-    },
     save_edit(){
       this.$store.dispatch('update_task', {taskid: this.task.id, text: this.new_text})
       this.toggle_settings()
-    },
-    toggle_edit(){
-      this.edit = !this.edit
     },
     toggle_settings(){
       // "cancel" action
@@ -111,7 +105,6 @@ export default {
   computed:{
     ...mapState(['columns']),
     taskalerts(){
-      // filter reminders that have not been raised     
       return this.task.alerts.filter((alert) => alert.completed === false)
     }
   },
