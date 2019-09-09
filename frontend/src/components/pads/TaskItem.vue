@@ -5,6 +5,7 @@
       <span v-for="goal in taskGoals" :key="goal.id" class="badge badge-info mr-2">{{ goal.title }}</span>
       <span :class="task.done ? 'badge badge-success mr-2' : 'badge badge-warning mr-2'">{{ task.done ? 'Done' : '' }}</span>
       <span class="mr-2"><small v-if="error_message" class="text-danger mr-2 error-message">{{error_message}}</small>#{{ task.id }}</span>
+      <span class="badge badge-info">Due {{ task.dueDate | toHumanDate }}</span>
     </p>
     <p class="pts3">
       <span v-for="alert in taskalerts" :key="alert.time" class="badge badge-warning mr-2">

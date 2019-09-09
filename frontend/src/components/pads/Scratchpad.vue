@@ -8,16 +8,17 @@
     </p>
     <div class="list-group scratch pt-2 pb-2">
       <p class="text-center text-info mt-5 mb-5" v-if="tasks_not_done.length == 0 & !showall">¯\_(ツ)_/¯ Nothing here</p>
-      <div v-if="!showall">
+      <div v-if="!showall" style="max-height:20rem;">
         <TaskItem v-for="task in tasks_not_done" :key="task.id" :note="task" :columnid="column.id"/>
       </div>
-      <div v-else>
+      <div v-else style="max-height:20rem;">
         <TaskItem v-for="task in column.tasks" :key="task.id" :note="task" :columnid="column.id" />
       </div>
     </div>
     <textarea id="task_text" type="text" placeholder='(Shift+Enter to save)' class="mt-4 mb-3 form-control bg-transparent" 
     @keyup.shift.enter="add_task($event, column)" rows="6"></textarea>
-    <p>
+    <b-form-input v-model="dueDate" type="date"></b-form-input>
+    <p class="mt-3">
       <a class="text-white p-2 bg-success" href="javascript:void(0)" @click="add_task(false, column)">Add</a> &nbsp; 
     </p>
   </div>
@@ -35,6 +36,7 @@ export default {
   },
   data(){
     return{
+      dueDate: '',
       filtering: false,
       showall:false
     }
@@ -53,7 +55,8 @@ export default {
       }
       var columnid = column.id
       if(tasktext != ''){
-        this.$store.dispatch('add_task', {columnid, text: tasktext})
+        this.$store.dispatch('add_task', {columnid, text: tasktext, dueDate: this.dueDate})
+        this.dueDate = ''
         if(e){
           e.target.value = ''
         }else{

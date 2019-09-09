@@ -6,7 +6,7 @@
         <b-list-group-item @click="add_new_column">
           <font-awesome-icon icon="plus" class="mr-2 text-info"/>New Column
         </b-list-group-item>
-        <b-list-group-item>
+        <b-list-group-item @click="newGoalModal = !newGoalModal">
           <font-awesome-icon icon="flag" class="mr-2 text-secondary"/>New Goal
         </b-list-group-item>
         <b-list-group-item @click="toggle_timer(); toggle_actionplus();">
@@ -20,32 +20,90 @@
         
       </b-list-group>
     </span>
+    <b-modal no-close-on-backdrop v-model="newGoalModal">
+      <h3>New Goal!</h3>
+      <b-form>
+        <b-form-input v-model="newGoal.title" required type="text" placeholder="Title" class="mb-2"></b-form-input>
+        <b-form-input v-model="newGoal.description" required type="text" placeholder="Description" class="mb-2"></b-form-input>
+        <p>Assign tasks to this goal</p>
+        <b-form-group label="Tasks To Do" class="text-left">
+          <b-form-checkbox-group
+            v-model="selectedOptions"
+            :options="tasks_todo"
+          ></b-form-checkbox-group>
+        </b-form-group>
+        <b-form-group label="Tasks Done" class="text-left">
+          <b-form-checkbox-group
+            v-model="selectedOptions"
+            :options="tasks_done"
+          ></b-form-checkbox-group>
+        </b-form-group>
+        <label :or="`type-date`">Due date:</label>
+        <b-form-input v-model="newGoal.dueDate" type="date" required></b-form-input>
+      </b-form>
+      <template v-slot:modal-footer="{ ok, cancel, hide }">
+        <b-button size="sm" variant="success" @click="add_new_goal">Create goal</b-button>
+        <b-button size="sm" variant="danger" @click="cancel(); clear_modal();">Cancel</b-button>
+      </template>
+    </b-modal>
   </div>
 </template>
 
 <script>
-import {mapActions, mapState} from 'vuex'
+import {mapActions, mapState, mapGetters} from 'vuex'
 export default {
   name: 'Actionplus',
   data(){
     return {
-      show: false
+      show: false,
+      newGoalModal: false,
+      selectedOptions: [],
+      tasks_todo: [],
+      tasks_done: [],
+      newGoal: {
+        title: '',
+        description: '',
+        dueDate: ''
+      }
     }
   },
   methods:{
     ...mapActions('timer',['toggle_timer']),
+    ...mapActions('goals',['add_goal']),
     toggle_actionplus(){
-      // reverse this.show
       this.show = !this.show
     },
     add_new_column(){
       this.$store.dispatch('add_new_column', {title: 'Change me'})
       this.toggle_actionplus()
       this.$router.push('/tasks')
+    },
+    add_new_goal(){
+      this.add_goal({title: this.newGoal.title, description:this.newGoal.description, 
+      tasks:this.selectedOptions, dueDate: new Date(this.newGoal.dueDate)})
+      this.clear_modal()
+      this.newGoalModal = false
+    },
+    clear_modal(){
+      this.selectedOptions = []
+      this.newGoal = {
+        title: '',
+        description: '',
+        dueDate: ''
+      }
     }
   },
   computed:{
-    ...mapState('timer', ['timerOn'])
+    ...mapState('timer', ['timerOn']),
+    ...mapGetters(['allTasks'])
+  },
+  created(){
+    this.allTasks.filter((t) => t.done === false).forEach(task => {
+      this.tasks_todo.push({text:`#${task.id} - ${task.text}`, value:{taskId:task.id}})
+    });
+    this.allTasks.filter((t) => t.done === true).forEach(task => {
+      this.tasks_done.push({text: `#${task.id} - ${task.text}`, value:{taskId:task.id}})
+    });
   }
 }
 </script>

@@ -190,7 +190,7 @@ const store = new Vuex.Store({
     update_active_tab({commit}, columnid){
       commit('UPDATE_ACTIVE_TAB', columnid)
     },
-    add_task({commit, state}, {columnid, text}){
+    add_task({commit, state}, {columnid, text, dueDate}){
       var task = {
         id: helperFunctions.next_task_id(state),
         text,
@@ -199,7 +199,7 @@ const store = new Vuex.Store({
         timeEntries:[],
         due: true,
         columnid,
-        dueDate: new Date().toDateString(),
+        dueDate,
         created: new Date().toUTCString()
       }
       commit('ADD_TASK', {columnid, task})

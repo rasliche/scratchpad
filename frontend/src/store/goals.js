@@ -4,7 +4,7 @@
     id: int,
     title: string,
     description: string,
-    tasks: list // This list only needs to contain the ids of the columm and task in obj e.g. [{columnId: 1, taskId: 1}]
+    tasks: list // This list only needs to contain the ids of the columm and task in obj e.g. [{taskId: 1}]
     completed: boolean
     dueDate: date object
 
@@ -13,14 +13,7 @@
  */
 
 const state = {
-  goals: [{
-    id: 1,
-    title: 'Test some goal',
-    description: 'Holidays to Bali, Indonesia and Italy!',
-    tasks: [{columnId: 1, taskId: 1},{columnId: 1, taskId: 2}],
-    completed: false,
-    dueDate: new Date()
-  }]
+  goals: []
 }
 
 const mutations = {
@@ -33,16 +26,16 @@ const mutations = {
       goals.splice(goals.indexOf(goalToRemove), 1)
     }
   },
-  ADD_TASK_TO_GOAL({goals}, {goalId, columnId, taskId}){
+  ADD_TASK_TO_GOAL({goals}, {goalId, taskId}){
     var goal = goals.find(g => g.id === goalId)
     if(goal){
-      goal.tasks.push({columnId, taskId: parseInt(taskId)})
+      goal.tasks.push({taskId: parseInt(taskId)})
     }
   },
-  REMOVE_TASK_FROM_GOAL({goals}, {goalId, columnId, taskId}){
+  REMOVE_TASK_FROM_GOAL({goals}, {goalId, taskId}){
     var goal = goals.find(g => g.id === goalId)
     if(goal){
-      goal.tasks.splice(goal.tasks.indexOf({columnId, taskId}), 1)
+      goal.tasks.splice(goal.tasks.indexOf({taskId}), 1)
     }
   },
   UPDATE_GOAL_TASKS({goals}, {goalId, newTasksList}){
@@ -60,14 +53,14 @@ const mutations = {
 }
 
 const actions = {
-  add_goal({commit, state}, {title, description, tasks}){
+  add_goal({commit, state}, {title, description, tasks, dueDate}){
     var goal = {
       id: state.goals.length + 1,
       title,
       description,
       tasks,
       completed: false,
-      dueDate: new Date()
+      dueDate,
     }
     commit('ADD_GOAL', goal)
   },
@@ -111,7 +104,7 @@ const getters = {
     const goal_tasks = getters.get_goal_tasks(goalId)
     var goalTasksDone = goal_tasks.filter(task => task.done === true).length
     var goalTasksTotal = goal_tasks.length
-    return parseFloat(((goalTasksDone / goalTasksTotal ) * 100).toFixed(2))
+    return parseFloat(((goalTasksDone / goalTasksTotal ) * 100).toFixed(2)) || 0
   }
 }
 

@@ -1,7 +1,7 @@
 <template>
   <b-card 
     bg-variant="default" 
-    :header="goal.title" class="text-center goal_card">
+    :header="goal.title" class="text-center goal_card m-3" style="max-width:40rem;">
     <b-card-text>{{goal.description}}</b-card-text>
     <b-progress :max="100" variant="success" height="1.5rem" animated>
       <b-progress-bar :value="percentageComplete" class="font-weight-bold text-dark">{{ percentageComplete }} % completed</b-progress-bar>
@@ -15,7 +15,8 @@
       </b-list-group-item>
     </b-list-group>
     <hr>
-    <a @click="show = !show" href="javascript:void(0)">Edit Goal</a>
+    <a @click="show = !show" href="javascript:void(0)" class="mr-2">Edit Goal</a>
+    <a v-if="percentageComplete == 100" href="javascript:void(0)" @click="complete_goal(goal.id)">Complete</a>
     <div v-if="show">
       <div>
         <p class="text-left">Select all tasks you wish to include as part of this goal.
@@ -24,14 +25,12 @@
           <b-form-checkbox-group
             v-model="selectedOptions"
             :options="tasks_todo"
-            name="flavour-1"
           ></b-form-checkbox-group>
         </b-form-group>
         <b-form-group label="Tasks Done" class="text-left">
           <b-form-checkbox-group
             v-model="selectedOptions"
             :options="tasks_done"
-            name="flavour-1"
           ></b-form-checkbox-group>
         </b-form-group>
       </div>
@@ -78,10 +77,10 @@ export default {
   },
   created(){
     this.allTasks.filter((t) => t.done === false).forEach(task => {
-      this.tasks_todo.push({text:`#${task.id} - ${task.text}`, value:{taskId:task.id, columnId:task.columnid}})
+      this.tasks_todo.push({text:`#${task.id} - ${task.text}`, value:{taskId:task.id}})
     });
     this.allTasks.filter((t) => t.done === true).forEach(task => {
-      this.tasks_done.push({text: `#${task.id} - ${task.text}`, value:{taskId:task.id, columnId:task.columnid}})
+      this.tasks_done.push({text: `#${task.id} - ${task.text}`, value:{taskId:task.id}})
     });
   }
 }
