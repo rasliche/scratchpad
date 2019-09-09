@@ -11,8 +11,8 @@
 import Alert from './components/Alert'
 import Navbar from './components/navigation/Navbar'
 import Actionplus from './components/Actionplus'
-import { mapState } from 'vuex'
 
+import { mapState } from 'vuex'
 
 export default {
   name: 'app',
@@ -39,7 +39,7 @@ export default {
     setInterval(()=>{
       localStorage.setItem('state',JSON.stringify(this.$store.state))
       this.$store.dispatch('calculate_used_storage')
-    }, 30000)
+    }, 120000)
 
     // start the note alerts sentinel
     setInterval((()=>{
@@ -66,11 +66,12 @@ export default {
   beforeDestroy() {
     clearInterval(this.globalTimer)
   },
-  computed: {
+  computed: { 
     ...mapState({
-    alerts: state => state.alerts,
-    columns: state => state.columns
-  })}
+      alerts: state => state.alerts,
+      columns: state => state.columns
+    })
+  }
 }
 </script>
 

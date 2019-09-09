@@ -15,19 +15,20 @@ function next_task_id(state){
   return totalTaks
 }
 
-function next_reminder_id(state, columnid, taskid){
+function next_reminder_id(state, taskid){
   var nextid;
-  var col = state.columns.find((col) => col.id === columnid)
-  if(col && col.tasks.length > 0){
-    var task = col.tasks.find((t) => t.id === taskid)
-    if(task && task.alerts.length > 0){
-      nextid = task.alerts[ task.alerts.length - 1 ].id + 1
+  state.columns.forEach((col) => {
+    if(col.tasks.length > 0){
+      var task = col.tasks.find((t) => t.id === taskid)
+      if(task && task.alerts.length > 0){
+        nextid = task.alerts[ task.alerts.length - 1 ].id + 1
+      }else{
+        nextid = 1
+      }
     }else{
       nextid = 1
     }
-  }else{
-    nextid = 1
-  }
+  })
   return nextid
 }
 

@@ -41,22 +41,20 @@ const store = new Vuex.Store({
         }
       }
     },
-    UPDATE_REMINDER({columns}, {columnid, taskid, reminderid}){
+    UPDATE_REMINDER({columns}, {taskid, reminderid}){
       // sets completed to true as it has alerted the user
-      var column = columns.find((col) => col.id === columnid)
-      if(column){
-        var task = column.tasks.find((t) => t.id === taskid)
+      columns.forEach((col) =>{
+        var task = col.tasks.find((t) => t.id === taskid)
         if(task){
           var reminder = task.alerts.find((rem) => rem.id === reminderid)
           if(reminder){
             reminder.completed = true
           }
         }
-      }
+      })
     },
-    ADD_REMINDER({columns}, {columnid, taskid, alertobj}){
-      var col = columns.find((c)=> c.id === columnid)
-      if(col){
+    ADD_REMINDER({columns}, {taskid, alertobj}){
+      columns.forEach((col) => {
         var task = col.tasks.find((n) => n.id === taskid)
         if(task){
           if(task.alerts){
@@ -66,11 +64,10 @@ const store = new Vuex.Store({
             task.alerts.push(alertobj)
           }
         }
-      }
+      })
     },
-    DELETE_REMINDER({columns}, {columnid, taskid, reminderid}){
-      var col = columns.find((c) => c.id === columnid)
-      if (col){
+    DELETE_REMINDER({columns}, {taskid, reminderid}){
+      columns.forEach((col) => {
         var task = col.tasks.find((t) => t.id === taskid)
         if(task){
           var reminder = task.alerts.find((rem) => rem.id === reminderid)
@@ -78,7 +75,7 @@ const store = new Vuex.Store({
             task.alerts.splice(task.alerts.indexOf(reminder), 1)
           }
         }
-      }
+      })
     },
     DELETE_COLUMN({columns}, {columnid}){
       var col = columns.find((c)=>c.id === columnid)
@@ -101,7 +98,8 @@ const store = new Vuex.Store({
     UPDATE_STATE(state, newstate){
       if (newstate.columns) state.columns = newstate.columns
       if (newstate.timer) state.timer = newstate.timer
-      if (newstate.regularTasks) state.regularTasks = newstate.regularTasks  
+      if (newstate.regularTasks) state.regularTasks = newstate.regularTasks
+      if (newstate.goals) state.goals = newstate.goals
     },
     ADD_TASK({columns}, {columnid, task}){
       var column = columns.find((col) => col.id === columnid)
@@ -109,34 +107,36 @@ const store = new Vuex.Store({
         column.tasks.push(task)
       }
     },
-    UPDATE_TASK({columns}, {columnid, taskid, text}){
-      var col = columns.find((c) => c.id === columnid)
-      if(col){
-        var task = col.tasks.find((n) => n.id === taskid)
-        if(task){
-          task.text = text
+    UPDATE_TASK({columns}, {taskid, text}){
+      columns.forEach((col) => {
+        if(col){
+          var task = col.tasks.find((n) => n.id === taskid)
+          if(task){
+            task.text = text
+          }
         }
-      }
+      })
     },
-    TOGGLE_DONE({columns}, {columnid, taskid}){
-      var col = columns.find((c) => c.id === columnid)
-      if(col){
-        var task = col.tasks.find((n) => n.id === taskid)
-        if(task){
+    TOGGLE_DONE({columns}, {taskid}){
+      columns.forEach((col) => {
+        var taskFound = col.tasks.find((t) => t.id === taskid)
+        if(taskFound){
+          var task = taskFound
           task.done = !task.done
           task.due = !task.due
         }
-      }
+      })
     },
-    DELETE_TASK({columns}, {columnid, taskid}){
-      var col = columns.find((c) => c.id === columnid)
-      if(col){
-        var task = col.tasks.find((n) => n.id === taskid)
-        if(task){
-          var index = col.tasks.indexOf(task)
-          col.tasks.splice(index, 1)
+    DELETE_TASK({columns}, {taskid}){
+      columns.forEach((col) => {
+        if(col){
+          var task = col.tasks.find((n) => n.id === taskid)
+          if(task){
+            var index = col.tasks.indexOf(task)
+            col.tasks.splice(index, 1)
+          }
         }
-      }
+      })
     },
     ADD_ALERT({alerts}, alert){
       alerts.push(alert)
@@ -158,19 +158,19 @@ const store = new Vuex.Store({
     move_task({commit}, {fromColId, toColId, taskid}){
       commit('MOVE_TASK', {fromColId, toColId, taskid})
     },
-    update_reminder({commit}, {columnid, taskid, reminderid}){
-      commit('UPDATE_REMINDER', {columnid, taskid, reminderid})
+    update_reminder({commit}, {taskid, reminderid}){
+      commit('UPDATE_REMINDER', {taskid, reminderid})
     },
-    add_reminder({commit, state}, {columnid, taskid, time}){     
+    add_reminder({commit, state}, {taskid, time}){     
       var alertobj = {
-        id: helperFunctions.next_reminder_id(state, columnid, taskid),
+        id: helperFunctions.next_reminder_id(state, taskid),
         time,
         completed: false
       }
-      commit('ADD_REMINDER', {columnid, taskid, alertobj})
+      commit('ADD_REMINDER', {taskid, alertobj})
     },
-    delete_task_reminder({commit}, {columnid, taskid, reminderid}){
-      commit('DELETE_REMINDER', {columnid, taskid, reminderid})
+    delete_task_reminder({commit}, {taskid, reminderid}){
+      commit('DELETE_REMINDER', {taskid, reminderid})
     },
     delete_column({commit}, {columnid}){
       commit('DELETE_COLUMN', {columnid})
@@ -204,14 +204,14 @@ const store = new Vuex.Store({
       }
       commit('ADD_TASK', {columnid, task})
     },
-    update_task({commit}, {columnid, taskid, text}){
-      commit('UPDATE_TASK', {columnid, taskid, text})
+    update_task({commit}, {taskid, text}){
+      commit('UPDATE_TASK', {taskid, text})
     },
-    toggle_done({commit}, {columnid, taskid}){
-      commit('TOGGLE_DONE', {columnid, taskid})
+    toggle_done({commit}, {taskid}){
+      commit('TOGGLE_DONE', {taskid})
     },
-    delete_task({commit}, {columnid, taskid}){
-      commit('DELETE_TASK', {columnid, taskid})
+    delete_task({commit}, {taskid}){
+      commit('DELETE_TASK', {taskid})
     },
     add_alert({commit}, {message, error}){
       if(!error){error = false}
@@ -249,6 +249,22 @@ const store = new Vuex.Store({
         total += col.tasks.filter((todo)=>todo.done === false).length
       })
       return total
+    },
+    allTasks({columns}){
+      var all_tasks = []
+      columns.forEach((col) => {
+        all_tasks = all_tasks.concat(col.tasks)
+      })
+      return all_tasks
+    },
+    get_task_goals: ({goals}) => (taskId) =>{
+      var taskGoals = []
+      goals.goals.forEach(goal => {
+        if(goal.tasks.find(t => t.taskId === taskId)){
+          taskGoals.push(goal.title)
+        }
+      })
+      return taskGoals
     }
   }
 })

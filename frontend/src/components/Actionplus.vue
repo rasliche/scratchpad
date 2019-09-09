@@ -54,8 +54,7 @@ export default {
 .actionspan{
   background: white;
   z-index: 200102;
-  /* border: 1px solid green; */
-  position: absolute;
+  position: fixed;
   bottom: 105px;
   right: 50px;
   box-shadow: 2px 3px 8px -2px rgba(0,0,0,0.75)
@@ -72,7 +71,7 @@ export default {
   z-index: 200102;
   line-height: 50px;
   border-radius: 25px;
-  position: absolute!important;
+  position: fixed!important;
   bottom: 50px;
   right: 50px;
   font-size: 17pt;

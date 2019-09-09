@@ -1,14 +1,17 @@
 <template>
   <div class="list-group-item mb-2" draggable @dragstart="pickuptask($event, task.id, columnid)">
     <small class="spt font-italic">{{ task.created | toHumanDate }}</small>
-    <small :class="task.done ? 'pts badge badge-success' : 'pts badge badge-warning'">{{ task.done ? 'Done' : '' }}</small>
-    <small class="pts2"><span v-if="error_message" class="text-danger error-message">{{error_message}}</span> #{{ task.id }}</small>
+    <p>    
+      <span v-for="goal in taskGoals" :key="goal.id" class="badge badge-info mr-2">{{ goal.title }}</span>
+      <span :class="task.done ? 'badge badge-success mr-2' : 'badge badge-warning mr-2'">{{ task.done ? 'Done' : '' }}</span>
+      <span class="mr-2"><small v-if="error_message" class="text-danger mr-2 error-message">{{error_message}}</small>#{{ task.id }}</span>
+    </p>
     <p class="pts3">
       <span v-for="alert in taskalerts" :key="alert.time" class="badge badge-warning mr-2">
         <font-awesome-icon icon="clock"/> {{alert.time}}
       </span>
     </p>
-    <p v-if="!edit" class="text-left mt-5 mb-3 mr-5 pr-5">{{ task.text }}</p>
+    <p v-if="!edit" class="text-left mt-4 mb-3 mr-5 pr-5">{{ task.text }}</p>
     <p v-else>
       <input @keyup.enter="save_edit" v-model="new_text" type="text" class="form-control border-warning mt-3 mb-3 mr-5">
     </p>
@@ -42,7 +45,8 @@ export default {
       task: this.note, // props are not reactive. To ensure reactivity remains, they must be used as local data properties.
       reminder_input: '',
       setting_reminder: false,
-      error_message: ''
+      error_message: '',
+      taskGoals: []
     }
   },
   props: {
@@ -69,7 +73,7 @@ export default {
     },
     save_reminder(){
       if(this.reminder_input.match(/^\d\d:\d\d$/gsi) && this.reminder_input.match(/^[0-2][0-9]:[0-5][0-9]$/)){
-        this.$store.dispatch('add_reminder', {columnid: this.columnid, taskid: this.task.id, time: this.reminder_input})
+        this.$store.dispatch('add_reminder', {taskid: this.task.id, time: this.reminder_input})
         this.reminder_input = ''
         this.toggle_settings()
       }else{
@@ -83,7 +87,7 @@ export default {
       this.setting_reminder = !this.setting_reminder
     },
     save_edit(){
-      this.$store.dispatch('update_task', {columnid: this.columnid, taskid: this.task.id, text: this.new_text})
+      this.$store.dispatch('update_task', {taskid: this.task.id, text: this.new_text})
       this.toggle_settings()
     },
     toggle_edit(){
@@ -95,11 +99,11 @@ export default {
       this.edit = false
     },
     toggle_done(){
-      this.$store.dispatch('toggle_done', {columnid: this.columnid, taskid: this.task.id})
+      this.$store.dispatch('toggle_done', {taskid: this.task.id})
     },
     delete_task(){
       if(confirm('Delete task?')){
-        this.$store.dispatch('delete_task', {columnid: this.columnid, taskid: this.task.id})
+        this.$store.dispatch('delete_task', {taskid: this.task.id})
       }
     }
   },
@@ -109,6 +113,13 @@ export default {
       // filter reminders that have not been raised     
       return this.task.alerts.filter((alert) => alert.completed === false)
     }
+  },
+  created(){
+    this.$store.state.goals.goals.forEach(goal => {
+      if(goal.tasks.find(t => t.taskId === this.task.id)){
+        this.taskGoals.push(goal)
+      }
+    });
   }
 }
 </script>
