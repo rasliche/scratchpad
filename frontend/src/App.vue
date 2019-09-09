@@ -3,20 +3,23 @@
     <Navbar />
     <Alert class="alert-pos" v-for="alert in alerts" :key="alert.id"  :alert="alert"/>
     <router-view/>
+    <Actionplus />
   </div>
 </template>
 
 <script>
 import Alert from './components/Alert'
-import Navbar from './components/Navbar'
-import { mapState } from 'vuex'
+import Navbar from './components/navigation/Navbar'
+import Actionplus from './components/Actionplus'
 
+import { mapState } from 'vuex'
 
 export default {
   name: 'app',
   components:{
     Alert,
-    Navbar
+    Navbar,
+    Actionplus
   },
   created(){
     document.title = 'Scratchy'
@@ -32,17 +35,17 @@ export default {
       this.$store.dispatch('update_state', state)
     }
 
-    // save stat to localStorage every 1 minute 
+    // save stat to localStorage every 0.5 minute 
     setInterval(()=>{
       localStorage.setItem('state',JSON.stringify(this.$store.state))
       this.$store.dispatch('calculate_used_storage')
-    }, 60000)
+    }, 10000)
 
     // start the note alerts sentinel
     setInterval((()=>{
       this.columns.forEach(col => {
-        col.notes.forEach(note => {
-          var incomplete_reminders = note.alerts.filter((alert) => alert.completed === false)
+        col.tasks.forEach(task => {
+          var incomplete_reminders = task.alerts.filter((alert) => alert.completed === false)
           var now = new Date()
           var h = now.getHours()
           var m = now.getMinutes()
@@ -51,8 +54,8 @@ export default {
             var rem_m = parseInt(reminder.time.split(':')[1])
             if(rem_h === h || rem_h < h){
               if(rem_m === m || rem_m < m){
-                this.$store.dispatch('add_alert', {message: `REMINDER: ${note.text}`, error: false})
-                this.$store.dispatch('update_reminder', {columnid:col.id, noteid:note.id, reminderid: reminder.id})
+                this.$store.dispatch('add_alert', {message: `REMINDER: ${task.text}`, error: false})
+                this.$store.dispatch('update_reminder', {columnid:col.id, taskid:task.id, reminderid: reminder.id})
               }
             }
           })
@@ -63,11 +66,12 @@ export default {
   beforeDestroy() {
     clearInterval(this.globalTimer)
   },
-  computed: {
+  computed: { 
     ...mapState({
-    alerts: state => state.alerts,
-    columns: state => state.columns
-  })}
+      alerts: state => state.alerts,
+      columns: state => state.columns
+    })
+  }
 }
 </script>
 
@@ -89,4 +93,5 @@ html{
   top:120px;
   z-index: 201010;
 }
+
 </style>

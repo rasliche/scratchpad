@@ -3,28 +3,32 @@
     <p class="text-left">
       <span class="mr-2">
         <font-awesome-icon icon="filter" class="mr-2"/>
-          <a href="javascript:void(0)" @click="showallnotes">{{ showall ? 'Hide done' : 'Show all (' + column.notes.length + ')' }} </a>
+        <a href="javascript:void(0)" @click="showall = !showall">{{ showall ? 'Hide done' : 'Show all (' + column.tasks.length + ')' }} </a>
       </span>
     </p>
     <div class="list-group scratch pt-2 pb-2">
-      <p class="text-center text-info mt-5 mb-5" v-if="notes_not_done.length == 0 & !showall">¯\_(ツ)_/¯ Nothing here</p>
-      <div v-if="!showall">
-        <NoteItem v-for="note in notes_not_done" :key="note.id" :note="note" :columnid="column.id"/>
+      <p class="text-center text-info mt-5 mb-5" v-if="tasks_not_done.length == 0 & !showall">¯\_(ツ)_/¯ Nothing here</p>
+      <div v-if="!showall" style="max-height:20rem;">
+        <TaskItem v-for="task in tasks_not_done" :key="task.id" :note="task" :columnid="column.id"/>
       </div>
-      <div v-else>
-        <NoteItem v-for="note in column.notes" :key="note.id" :note="note" :columnid="column.id" />
+      <div v-else style="max-height:20rem;">
+        <TaskItem v-for="task in column.tasks" :key="task.id" :note="task" :columnid="column.id" />
       </div>
     </div>
-    <textarea id="todo_text" type="text" placeholder='(Shift+Enter to save)' class="mt-4 mb-3 form-control bg-transparent" 
-    @keyup.shift.enter="add_note($event, column)" rows="6"></textarea>
-    <p>
-      <a class="text-white p-2 bg-success" href="javascript:void(0)" @click="add_note(false, column)">Add</a> &nbsp; 
-    </p>
+    <b-form>
+      <b-form-textarea @keyup.shift.enter="addTask" v-model="task.text" placeholder="(Shift+Enter to save)" rows="6" class="mt-3 mb-3"></b-form-textarea>
+      <b-form-input v-model="task.dueDate" type="date"></b-form-input>
+      <p class="mt-3">
+        <a class="text-white p-2 bg-success" href="javascript:void(0)" @click="addTask">Add</a>
+      </p>
+    </b-form>
   </div>
 </template>
 
 <script>
-import NoteItem from './NoteItem'
+/*eslint-disable*/
+import TaskItem from './TaskItem'
+import {mapActions} from 'vuex'
 export default {
   name: 'Scratchpad',
   props:{
@@ -35,38 +39,30 @@ export default {
   },
   data(){
     return{
+      task:{columnid: this.column.id, text:'', dueDate:''},
       filtering: false,
-      showall:false
+      showall:false,
+      error: ''
     }
   },
   components:{
-    NoteItem
+    TaskItem
   },
   methods:{
-    showallnotes(){this.showall = !this.showall},
-    add_note(e, column){
-      var notetext;
-      if(!e){
-        notetext = document.getElementById('todo_text').value
+    ...mapActions(['add_task']),
+    addTask(){
+      if(this.task.text !== '' && this.task.dueDate !== ''){
+        console.log(this.task)
+        this.add_task(this.task)
+        this.task = {columnid: this.column.id, text:'', dueDate:''}
       }else{
-        notetext = e.target.value
-      }
-      var columnid = column.id
-      if(notetext != ''){
-        this.$store.dispatch('add_note', {columnid, text: notetext})
-        if(e){
-          e.target.value = ''
-        }else{
-          document.getElementById('todo_text').value = ''
-        }
-      }else{
-        alert('Type something.')
+        alert('Did yoy forget something? Check your task has a due date and a bit of text.')
       }
     }
   },
   computed: {
-    notes_not_done(){
-      return this.column.notes.filter((note) => note.done == false)
+    tasks_not_done(){
+      return this.column.tasks.filter((task) => task.done === false)
     }
   }
 }

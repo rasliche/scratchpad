@@ -1,11 +1,8 @@
 <template>
-  <div class="margin-top-120">
+  <div>
     <div class="row ml-1 mr-1">
       <div class="col">
         <ul class="nav nav-tabs mb-4">
-          <li class="nav-item mr-2">
-            <a @click="add_new_column" href="javascript:void(0)" class="new_tab nav-link bg-info text-white"><font-awesome-icon icon="plus" /> New</a>
-          </li>
           <li class="nav-item mr-2">
             <a @click="show_timers_tab" href="javascript:void(0)" :class="activeTab === 'timers_tab' ? 'nav-link active' : 'nav-link'">My timers ({{timers.length}})</a>
           </li>
@@ -57,17 +54,11 @@ export default  {
     },
     show_regulars_tab(){
       this.$store.dispatch('update_active_tab', 'regulars_tab')
-    },
-    add_new_column(){
-      this.$store.dispatch('add_new_column', {title: 'Change me'})
     }
   }
 }
 </script>
 <style>
-.margin-top-120{
-  margin-top: 120px!important;
-}
 .new_tab{
   border-radius: 0!important;
 }
