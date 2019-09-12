@@ -66,9 +66,8 @@ export default {
   },
   computed:{
     ...mapState('goals',{activeGoals: state => state.goals.filter((goal) => goal.completed === false)}),
-    ...mapState({columns: state => state.columns}),
     ...mapGetters('goals', ['get_percentage_completed']),
-    ...mapGetters(['allTasks']),
+    ...mapGetters(['allTasks', 'columns']),
 
     tasks_due_today(){
       var tasksDueToday = [];
