@@ -243,6 +243,7 @@ const store = new Vuex.Store({
   },
   getters:{
     now: state => state.now,
+    columns: state => state.columns,
     all_tasks_not_done_count({columns}){
       var total = 0
       columns.forEach((col)=>{
