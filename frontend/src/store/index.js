@@ -244,22 +244,20 @@ const store = new Vuex.Store({
   getters:{
     now: state => state.now,
     columns: state => state.columns,
-    all_tasks_not_done_count({columns}){
-      var total = 0
-      columns.forEach((col)=>{
+      let total = 0
+      state.columns.forEach((col)=>{
         total += col.tasks.filter((todo)=>todo.done === false).length
       })
       return total
     },
-    allTasks({columns}){
-      var all_tasks = []
-      columns.forEach((col) => {
+      let all_tasks = []
+      state.columns.forEach((col) => {
         all_tasks = all_tasks.concat(col.tasks)
       })
       return all_tasks
     },
     get_task_goals: ({goals}) => (taskId) =>{
-      var taskGoals = []
+      let taskGoals = []
       goals.goals.forEach(goal => {
         if(goal.tasks.find(t => t.taskId === taskId)){
           taskGoals.push(goal.title)
