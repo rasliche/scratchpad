@@ -12,7 +12,7 @@ import Alert from './components/Alert'
 import Navbar from './components/navigation/Navbar'
 import Actionplus from './components/Actionplus'
 
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 
 export default {
   name: 'app',
@@ -69,8 +69,8 @@ export default {
   computed: { 
     ...mapState({
       alerts: state => state.alerts,
-      columns: state => state.columns
-    })
+    }),
+    ...mapGetters(['columns'])
   }
 }
 </script>
