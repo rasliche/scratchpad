@@ -69,10 +69,12 @@ export default {
     ...mapGetters('goals', ['get_percentage_completed']),
     ...mapGetters(['allTasks', 'columns']),
 
-    tasks_due_today(){
-      var tasksDueToday = [];
+    tasks_due_today: function() {
+      let tasksDueToday = [];
+      // eslint-disable-next-line
+      console.log(this.columns)
       this.columns.forEach(col => {        
-        var colTasksDue = col.tasks.filter((task)=> task.due === true && task.done === false && task.dueDate === moment().format('YYYY-MM-DD'))
+        let colTasksDue = col.tasks.filter((task)=> task.due === true && task.done === false && task.dueDate === moment().format('YYYY-MM-DD'))
         tasksDueToday = tasksDueToday.concat(colTasksDue)              
       });
       return tasksDueToday
