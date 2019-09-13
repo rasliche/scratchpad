@@ -17,7 +17,7 @@ const store = new Vuex.Store({
   state:{
     activeTab:1,
     columns:[{
-      id:1,
+      id: 1,
       title: 'Things to do',
       tasks: []
     }],
@@ -55,7 +55,7 @@ const store = new Vuex.Store({
     },
     ADD_REMINDER({columns}, {taskid, alertobj}){
       columns.forEach((col) => {
-        var task = col.tasks.find((n) => n.id === taskid)
+        let task = col.tasks.find((n) => n.id === taskid)
         if(task){
           if(task.alerts){
             task.alerts.push(alertobj)
