@@ -21,7 +21,7 @@ export default {
     Navbar,
     Actionplus
   },
-  created(){
+  mounted(){
     document.title = 'Scratchy'
 
     // Start and continuously update global time
